@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#FF000000</color>
+    <color name="app_name_color">#E3FFFFFF</color>
+    <color name="card_title">#FF171834</color>
+    <color name="card_sub_title">#99171834</color>
+</resources>

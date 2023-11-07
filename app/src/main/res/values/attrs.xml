@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="widthPercent" format="float" />
+    <declare-styleable name="UCarAutoScaleTextView">
+        <attr name="widthPercent" />
+        <attr name="lengthByChar" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="UCarPinCodeView">
+        <attr name="widthPercent" />
+    </declare-styleable>
+    <string name="leak_canary_test_class_name">assertk.Assert</string>
+</resources>

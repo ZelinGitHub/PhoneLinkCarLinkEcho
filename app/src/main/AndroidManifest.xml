@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        package="com.wt.phonelink"
+        android:sharedUserId="android.uid.system">
+
+    <uses-sdk tools:overrideLibrary="com.easy.logger" />
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission
+            android:name="android.permission.MANAGE_USB"
+            tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission
+            android:name="android.permission.WRITE_SETTINGS"
+            tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="com.tinnove.link.permission.WT_LINK_CONTROL" />
+
+    <application
+            android:name="com.wt.phonelink.MyApplication"
+            android:allowBackup="false"
+            android:extractNativeLibs="true"
+            android:icon="@drawable/icon_phonelink"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme"
+            android:hardwareAccelerated="false">
+        <!--        注意，透明窗口的主题，要在activity标签中单独设置-->
+        <activity
+                android:theme="@style/translucentTheme"
+                android:name=".MainActivity"
+                android:configChanges="uiMode"
+                android:exported="true"
+                android:launchMode="singleInstance"
+                android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <service
+                android:name="com.wt.phonelink.LaunchFloatingService"
+                android:enabled="true"
+                android:exported="true"
+                android:permission="com.wtcl.action.LAUNCHER_ANIMATION_PERMISSIONS">
+            <intent-filter android:priority="1000">
+                <action android:name="com.wtcl.action.LAUNCHER_ANIMATION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+
+        <activity
+                android:theme="@style/translucentTheme"
+                android:name=".carlink.CarLinkMainActivity"
+                android:launchMode="singleTask" />
+        <activity
+                android:theme="@style/translucentTheme"
+                android:name=".hicar.HiCarMainActivity"
+                android:launchMode="singleTask" />
+
+        <receiver
+                android:name=".hicar.broadcast.HiCarReceiver"
+                android:enabled="true"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="com.incall.apps.hicar.ACTION_START_MAINACTIVITY" />
+            </intent-filter>
+        </receiver>
+        <receiver
+                android:name=".PhoneLinkWidgetProvider"
+                android:enabled="true"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.wt.phonelick.action.ACTION_CLICK_APP_WIDGET" />
+            </intent-filter>
+            <meta-data
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/appwidget_provider" />
+        </receiver>
+    </application>
+
+    <queries>
+        <package android:name="com.tinnove.wecarspeech" />
+    </queries>
+
+</manifest>

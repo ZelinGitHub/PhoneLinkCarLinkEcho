@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="@color/background"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_hicar_pincode"
+        android:layout_width="match_parent"
+        android:layout_height="577dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="323dp"
+        android:layout_marginEnd="76dp"
+        android:background="@drawable/bg_hicar_pincode"
+        >
+
+        <TextView
+            android:id="@+id/hicar_code_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp"
+            android:text="@string/huawei_hicar_code_text"
+            android:textColor="@color/colorTextBlackCC"
+            android:textSize="44sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/hicar_code_value_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="137dp"
+            android:layout_marginTop="94dp"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hicar_code_text"
+            android:gravity="center|start"
+            >
+
+            <Button
+                android:id="@+id/hicar_code_value_text1"
+                android:layout_width="137dp"
+                android:layout_height="wrap_content"
+                android:textSize="100sp"
+                android:gravity="center"
+                android:textColor="@color/colorTextBlackCB"
+                android:background="@drawable/shape_12_blue"
+                android:paddingBottom="7dp"/>
+
+            <Button
+                android:id="@+id/hicar_code_value_text2"
+                android:layout_width="137dp"
+                android:layout_height="wrap_content"
+                android:textSize="100sp"
+                android:gravity="center"
+                android:layout_marginStart="70dp"
+                android:textColor="@color/colorTextBlackCB"
+                android:background="@drawable/shape_12_blue"/>
+
+            <Button
+                android:id="@+id/hicar_code_value_text3"
+                android:layout_width="137dp"
+                android:layout_height="wrap_content"
+                android:textSize="100sp"
+                android:gravity="center"
+                android:layout_marginStart="70dp"
+                android:textColor="@color/colorTextBlackCB"
+                android:background="@drawable/shape_12_blue"/>
+
+            <Button
+                android:id="@+id/hicar_code_value_text4"
+                android:layout_width="137dp"
+                android:layout_height="wrap_content"
+                android:textSize="100sp"
+                android:gravity="center"
+                android:layout_marginStart="70dp"
+                android:textColor="@color/colorTextBlackCB"
+                android:background="@drawable/shape_12_blue"/>
+
+            <Button
+                android:id="@+id/hicar_code_value_text5"
+                android:layout_width="137dp"
+                android:layout_height="wrap_content"
+                android:textSize="100sp"
+                android:gravity="center"
+                android:layout_marginStart="70dp"
+                android:textColor="@color/colorTextBlackCB"
+                android:background="@drawable/shape_12_blue"/>
+
+            <Button
+                android:id="@+id/hicar_code_value_text6"
+                android:layout_width="137dp"
+                android:layout_height="wrap_content"
+                android:textSize="100sp"
+                android:gravity="center"
+                android:layout_marginStart="70dp"
+                android:textColor="@color/colorTextBlackCB"
+                android:background="@drawable/shape_12_blue"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/hicar_text_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="110dp"
+            android:text="@string/huawei_hicar_ap_tips"
+            android:textColor="@color/colorTextBlackCC"
+            android:textSize="@dimen/hicar_text_size32"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hicar_code_value_layout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <wtcl.lib.widget.WTButton
+        android:id="@+id/hicar_btn_cancel"
+        android:layout_width="212dp"
+        android:layout_height="88dp"
+        android:layout_below="@id/cl_hicar_pincode"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="131dp"
+        android:text="@string/huawei_hicar_usb_cancel"
+        android:textColor="@color/colorTextBlackCC"
+        android:textSize="@dimen/hicar_text_size36"
+        app:wtBtnType="containedBtn_default" />
+
+</RelativeLayout>

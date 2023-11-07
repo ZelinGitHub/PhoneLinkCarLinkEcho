@@ -1,0 +1,82 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        package="com.incall.apps.hicar.servicesdk"
+        android:sharedUserId="android.uid.system">
+
+    <!--
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        >
+    </application>
+-->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <uses-permission
+            android:name="android.permission.BIND_ACCESSIBILITY_SERVICE"
+            tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <application
+            android:allowBackup="false"
+            android:label="@string/app_name"
+            android:supportsRtl="true">
+
+        <receiver
+                android:name="com.incall.apps.hicar.servicesdk.broadcast.HicarBootReceiver"
+                android:enabled="true"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+        <!--
+        <receiver
+            android:name="com.incall.apps.hicar.servicesdk.broadcast.IPOReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN_HU" />
+                <action android:name="android.intent.action.ACTION_BOOT_HU" />
+            </intent-filter>
+        </receiver>
+        -->
+        <!-- android:process=":remote1" -->
+        <service
+                android:name="com.incall.apps.hicar.servicesdk.HiCarService"
+                android:enabled="true"
+                android:exported="true">
+            <!--  新增service的权限，增加拉起的速度 -->
+            <intent-filter android:priority="2147483647">
+                <action android:name="com.incall.hicar.service" />
+                <category android:name="android.intent.category.default" />
+            </intent-filter>
+        </service>
+        <service
+                android:name="com.incall.apps.hicar.servicesdk.HiCarManagerService"
+                android:exported="true" />
+        <!--  监听方控的服务      -->
+        <service
+                android:name="com.incall.apps.hicar.servicesdk.servicesimpl.CommonKeyService"
+                android:enabled="true"
+                android:exported="true"
+                android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+                android:persistent="true">
+            <intent-filter>
+                <action android:name="com.incall.HARD_KEY_SERVICE" />
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                    android:name="android.accessibilityservice"
+                    android:resource="@xml/accessibility_service_config" />
+        </service>
+
+    </application>
+</manifest>

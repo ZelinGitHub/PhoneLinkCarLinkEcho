@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="black">#FF0B0A0B</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_10">#10FFFFFF</color>
+    <color name="darker_white">#FFE0E0E0</color>
+    <color name="gray">#FF9C9B9B</color>
+    <color name="bg_color">#404142</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorWhite60">#99FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="color80Black">#80000000</color>
+    <color name="colorBlue">#72ddd0</color>
+    <color name="colorGrayAC">#ACACAC</color>
+    <color name="color_gray_e2">#E2E2E4</color>
+    <color name="color_black_19">#191919</color>
+
+    <color name="colorGradientWhite42">#42FFFFFF</color>
+    <color name="colorGradientWhite56">#56FFFFFF</color>
+    <color name="colorGradientWhite50">#50FFFFFF</color>
+    <color name="colorGradientWhite47">#47FFFFFF</color>
+    <color name="colorGradientWhite00">#00FFFFFF</color>
+    <color name="colorGradientWhiteFF">#FFFFFFFF</color>
+    <color name="colorBg">#F2F4F6</color>
+    <color name="colorWhiteTranslucent">#00FFFFFF</color>
+    <color name="colorTextBlackCB">#CB000000</color>
+    <color name="colorTextBlackCC">#CC000000</color>
+    <color name="colorTextBlackCD">#CD000000</color>
+    <color name="colorTextBlue60">#FF606C95</color>
+    <color name="colorTextBlueFF60">#FF606C95</color>
+    <color name="colorTextBlackD7">#D7DEE8</color>
+</resources>

@@ -1,0 +1,75 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "V1.0.8_CD569"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //定义flavor的维度，每个flavor都可以配置自己的维度（Dimension）
+        flavorDimensions "default"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {// 配置了不同的res资源
+        default_main {
+
+        }
+        c318 {
+
+        }
+        c857 {
+
+        }
+    }
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/test/java/']
+            aidl.srcDirs = ['src/main/aidl']
+        }
+    }
+}
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha3'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.3'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    api 'org.greenrobot:eventbus:3.1.1'
+    api project(path: ':CAServiceManager')
+    //api会导致传递依赖
+    api project(path: ':ScheduleCard')
+    //compileOnly等同于provided。
+    //只在编译时有效，不会参与打包。
+    //可以在自己的module中使用该方式依赖一些比如com.android.support，gson这些使用者常用的库，避免冲突。。
+    compileOnly files('libs/framework_c318.jar')//todo
+    api files('libs/classes.jar')
+    api files('libs/CommonInterface_20210721.jar')
+    //集成hicar
+    api(name: 'hicarsdk-android-4.0.0.300', ext: 'aar')
+    //集成carlink
+//    api(name: 'carlink-sdk-v1.2.14', ext: 'aar')
+    api(name: 'carlink-sdk-v1.5.4-beat', ext: 'aar')
+    // 虚拟车
+    //虚拟车平台化库（不包含IncallServerSDK，所以需要单独依赖进来）
+    implementation "com.virtualcar.sdk:virtualcar-platform:1.0.0.f"
+    //导航
+    implementation 'com.tinnove.navi.skill.sdk:out-going-card:1.0.0-SNAPSHOT'
+    api 'com.alibaba:fastjson:2.0.28'
+}

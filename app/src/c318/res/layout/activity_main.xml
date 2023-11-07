@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cl_main_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background">
+
+
+    <wtcl.lib.widget.WTTitleBar
+            android:icon="@drawable/ic_all_close_outlined"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="手机互联"
+            android:layout_marginStart="40dp"
+            android:id="@+id/v_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    <!--    两个按钮，分别是hicar和carlink-->
+    <!--    增加一个按钮，作为手机盒子入口-->
+    <ImageView
+            android:id="@+id/iv_wt_box"
+            android:layout_width="448dp"
+            android:layout_height="536dp"
+            android:layout_marginEnd="140dp"
+            android:background="@drawable/bg_wt_box"
+            app:layout_constraintRight_toLeftOf="@id/iv_hicar"
+            app:layout_constraintTop_toTopOf="@id/iv_hicar" />
+
+    <ImageView
+            android:id="@+id/iv_hicar"
+            android:layout_width="448dp"
+            android:layout_height="536dp"
+            android:layout_marginEnd="140dp"
+            android:background="@drawable/bg_hicar"
+            app:layout_constraintRight_toLeftOf="@id/iv_carlink"
+            app:layout_constraintTop_toTopOf="@id/iv_carlink" />
+
+    <ImageView
+            android:id="@+id/iv_carlink"
+            android:layout_width="448dp"
+            android:layout_height="536dp"
+            android:layout_marginTop="141dp"
+            android:layout_marginEnd="148dp"
+            android:background="@drawable/bg_carlink"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

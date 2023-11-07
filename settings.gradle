@@ -1,0 +1,9 @@
+include ':app'
+//CAServiceManager模块包含使用华为hicar的一些类使用的事件总线组件
+include ':CAServiceManager'
+//HiCarPresenterComponent模块里面是使用华为hicar的一些presenter（MVP模式）
+include ':HiCarPresenterComponent'
+//包含核心类HiCarServiceManager和一切其他的管理器、工具类、serviceImpl和BBinder对象HiCarManagerImpl
+include ':HiCarServiceComponent'
+include ':HiCarClient'
+include ':ScheduleCard'

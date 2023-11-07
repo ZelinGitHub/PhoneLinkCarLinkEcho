@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/motion_layout"
+        app:layoutDescription="@xml/activity_main_scene"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:clipToPadding="false">
+
+    <!--    垂直导航线-->
+    <!--    左侧导航线。默认是全屏：距离左侧0dp-->
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/left_panel_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="0dp" />
+    <!--    垂直导航线-->
+    <!--    右侧导航线。默认是全屏：距离右侧0dp-->
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/right_panel_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="0dp" />
+
+    <!--    关闭按钮和标题控件-->
+    <wtcl.lib.widget.WTTitleBar
+            android:icon="@drawable/ic_all_close_outlined"
+            app:layout_constraintStart_toStartOf="@id/left_panel_guideline"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="手机互联"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="64dp"
+            style="@style/WTTextStyleSubtitle1Bold"
+            android:id="@+id/v_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_entries"
+            android:layout_width="wrap_content"
+            android:layout_height="800dp"
+            android:clipToPadding="false"
+            app:layout_constraintEnd_toEndOf="@id/right_panel_guideline"
+            app:layout_constraintStart_toStartOf="@id/left_panel_guideline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

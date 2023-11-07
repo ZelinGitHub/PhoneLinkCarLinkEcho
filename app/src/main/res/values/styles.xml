@@ -1,0 +1,94 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- Android 5.0+，设置状态栏全透明透明 -->
+        <item name="android:statusBarColor">@color/colorWhiteTranslucent</item>
+    </style>
+
+    <style name="NoTitle_FullScreen" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="NoTitle_FullScreen.Black" parent="NoTitle_FullScreen">
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+    <style name="loading_style" parent="android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/loading_bg</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="UCarPinCode.Style" parent="android:Widget.TextView">
+        <item name="android:background">@drawable/shape_bg_pin_code</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorTextBlackCB</item>
+    </style>
+
+    <style name="UCarDialog.Style" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowSoftInputMode">stateHidden</item>
+        <item name="android:windowBackground">@drawable/shape_bg_dialog</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="HiCarActivity" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="PinCodeTextStyle_Item1">
+        <item name="android:layout_width">137dp</item>
+        <item name="android:layout_height">137dp</item>
+        <item name="android:textSize">100sp</item>
+    </style>
+
+    <style name="PinCodeTextStyle">
+        <item name="android:layout_width">137dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">100sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginLeft">70dp</item>
+        <item name="android:textColor">@color/colorTextBlackCB</item>
+        <item name="background">@color/colorTextBlue60</item>
+    </style>
+
+    <style name="Animation">
+        <item name="android:activityOpenEnterAnimation">@null</item>
+        <item name="android:activityOpenExitAnimation">@null</item>
+        <item name="android:activityCloseEnterAnimation">@null</item>
+        <item name="android:activityCloseExitAnimation">@null</item>
+        <item name="android:taskOpenEnterAnimation">@anim/anim_activity_enter_scale</item>
+        <item name="android:taskOpenExitAnimation">@null</item>
+        <item name="android:taskCloseEnterAnimation">@null</item>
+        <item name="android:taskCloseExitAnimation">@null</item>
+        <item name="android:taskToFrontEnterAnimation">@null</item>
+        <item name="android:taskToFrontExitAnimation">@null</item>
+        <item name="android:taskToBackEnterAnimation">@null</item>
+        <item name="android:taskToBackExitAnimation">@null</item>
+    </style>
+
+    <style name="anim_transition" parent="HiCarActivity">
+        <item name="android:windowBackground">@mipmap/bg_changan_transition_new</item>
+        <item name="android:windowAnimationStyle">@style/Animation</item>
+    </style>
+    <!-- 全透明 沉浸式主题样式 -->
+    <style name="translucentTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/colorWhiteTranslucent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+</resources>

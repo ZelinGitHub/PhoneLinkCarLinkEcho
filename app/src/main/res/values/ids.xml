@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tv_dialog_done" type="id" />
+    <item name="tv_dialog_cancel" type="id" />
+    <item name="tv_dialog_message" type="id" />
+    <item name="tv_dialog_icon_title" type="id" />
+</resources>
