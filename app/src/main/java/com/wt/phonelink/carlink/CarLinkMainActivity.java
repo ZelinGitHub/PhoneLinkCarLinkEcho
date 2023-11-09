@@ -3,6 +3,7 @@ package com.wt.phonelink.carlink;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioAttributes;
@@ -28,6 +29,7 @@ import com.openos.skin.WTSkinManager;
 import com.openos.skin.info.SkinInfo;
 import com.ucar.sdk.BuildConfig;
 import com.ucar.vehiclesdk.ICameraInfoListener;
+import com.ucar.vehiclesdk.ICarAudioRecorderListener;
 import com.ucar.vehiclesdk.ICarConnectListener;
 import com.ucar.vehiclesdk.ICarInitCallback;
 import com.ucar.vehiclesdk.IPhoneDataListener;
@@ -76,6 +78,7 @@ import wtcl.lib.widget.WTButton;
 //carLink的连接界面
 public class CarLinkMainActivity extends PermissionsReqActivity {
     private static final String TAG = "WTPhoneLink/CarLinkMainActivity";
+    private ICarAudioRecorderListener mAudioRecorderListener;
 
     public static final int MSG_ON_CONNECT_STATE_CHANGED = 101;
     public static final int MSG_START_ADVERTISE_SCAN_DEVICE = 102;
@@ -589,6 +592,10 @@ public class CarLinkMainActivity extends PermissionsReqActivity {
             };
             UCarAdapter.getInstance().registerCameraInfoListener(mCameraInfoCallback);
         }
+        if (mUCarConfig.isUseCustomAudioRecord()) {
+            mAudioRecorderListener = new CarlinkCustomAudioRecord();
+            UCarAdapter.getInstance().registerAudioRecorderListener(mAudioRecorderListener);
+        }
     }
 
 
@@ -1030,6 +1037,7 @@ public class CarLinkMainActivity extends PermissionsReqActivity {
         UCarAdapter.getInstance().unregisterCarConnectListener(mConnectCallback);
         UCarAdapter.getInstance().unregisterPhoneDataListener(mPhoneDataCallback);
         UCarAdapter.getInstance().unregisterCameraInfoListener(mCameraInfoCallback);
+//        UCarAdapter.getInstance().unRegisterAudioRecorderListener(mAudioRecorderListener);
         UCarAdapter.getInstance().deInit();
         sIsServiceInitialized = false;
         stopLauncherFloater();
@@ -1063,10 +1071,10 @@ public class CarLinkMainActivity extends PermissionsReqActivity {
 
     public byte[] getBluetoothMac() {
         byte[] macBytes = new byte[CAR_ID_SIZE];
-        BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
+        BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         @SuppressLint("HardwareIds") String mac = bluetoothManager.getAdapter().getAddress();
-        Log.i(TAG, "car mac:" + mac + ", is connected before:" +
-                UCarAdapter.existedCarBluetoothMac(mac, getApplicationContext()));
+        Log.i(TAG, "car mac:" + mac + ", is connected before: " +
+                (UCarAdapter.getPhoneIdByBtMac(mac, getApplicationContext()) != null ? "true" : " false"));
         if (mac != null) {
             String[] strArr = mac.split(":");
             for (int i = 0; i < strArr.length; i++) {
@@ -1134,6 +1142,8 @@ public class CarLinkMainActivity extends PermissionsReqActivity {
                     .setVideoDisplayHeight(mExpectedDisplayHeight)
                     .setSupportP2P(true)//WIFI+蓝牙
                     .setSupportCamera(true)
+                    //设置使用自定义音频录制
+                    .setUseCustomAudioRecord(true)
 //                    .setSupportSoftAP(true)//热点连接
                     .setSupportStereoRecord(true)
                     .build();

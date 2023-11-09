@@ -65,7 +65,7 @@ dependencies {
     api(name: 'hicarsdk-android-4.0.0.300', ext: 'aar')
     //集成carlink
 //    api(name: 'carlink-sdk-v1.2.14', ext: 'aar')
-    api(name: 'carlink-sdk-v1.5.4-beat', ext: 'aar')
+    api(name: 'carlink-sdk-v1.5.2', ext: 'aar')
     // 虚拟车
     //虚拟车平台化库（不包含IncallServerSDK，所以需要单独依赖进来）
     implementation "com.virtualcar.sdk:virtualcar-platform:1.0.0.f"
