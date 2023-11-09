@@ -367,7 +367,6 @@ public class CarLinkMainActivity extends PermissionsReqActivity {
         castLayout = findViewById(R.id.rl_cast_player);
         mDeviceName = findViewById(R.id.tv_device_name);
         mPinCodeView = findViewById(R.id.upc_pin_code);
-        mSurfaceView = this.findViewById(R.id.surface_view);
     }
 
     private void initUI() {
@@ -921,8 +920,6 @@ public class CarLinkMainActivity extends PermissionsReqActivity {
             //移除回调对象
             mSurfaceView.getHolder().removeCallback(mSurfaceHolderCallback);
             mSurfaceHolderCallback = null;
-            //置位空
-            mSurfaceView = null;
         }
     }
 
