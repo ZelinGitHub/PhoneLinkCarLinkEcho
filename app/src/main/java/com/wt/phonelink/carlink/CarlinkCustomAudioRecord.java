@@ -20,6 +20,7 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
     private boolean mSupportStereoRecord = true;
     private int mAudioBufSize = 0;
     public static final int MAX_RETRY_COUNT = 15;
+    //是否正在录音
     private volatile boolean mIsRecording = false;
     private static final long INTERVAL_RETRY = 10L;
 
@@ -142,6 +143,7 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
                         }
                         continue;
                     }
+                    //正在录音
                     mIsRecording = true;
                     break;
                 }
@@ -151,6 +153,7 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
                 }
                 int size = mAudioBufSize / 2;
                 short[] samples = new short[size];
+                //如果正在录音
                 while (mIsRecording) {
                     //使用AudioRecord读取数据
                     int bufferRead = mAudioRecord.read(samples, 0, size);
