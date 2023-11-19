@@ -1034,6 +1034,7 @@ public class CarLinkMainActivity extends PermissionsReqActivity {
         UCarAdapter.getInstance().unregisterCarConnectListener(mConnectCallback);
         UCarAdapter.getInstance().unregisterPhoneDataListener(mPhoneDataCallback);
         UCarAdapter.getInstance().unregisterCameraInfoListener(mCameraInfoCallback);
+        //暂时没有反注册的方法
 //        UCarAdapter.getInstance().unRegisterAudioRecorderListener(mAudioRecorderListener);
         UCarAdapter.getInstance().deInit();
         sIsServiceInitialized = false;
