@@ -351,7 +351,6 @@ public class CarLinkMainActivity extends PermissionsReqActivity {
         setContentView(R.layout.activity_ucar_cast);
         WTSkinManager.get().addSkinChangedListener(mSkinChangedListener);
         mSharedPreferencesUtil = SharedPreferencesUtil.getInstance(MyApplication.getContext());
-
         initViewRefs();
         initUI();
     }

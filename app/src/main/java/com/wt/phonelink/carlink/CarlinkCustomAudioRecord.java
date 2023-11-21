@@ -25,18 +25,9 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
     //录音失败后的重试间隔
     private static final long INTERVAL_RETRY = 10L;
 
-    //the sample rate expressed in Hertz.
-    // 44100Hz is currently the only rate that is guaranteed to work on all devices,
-    // but other rates such as 22050, 16000, and 11025 may work on some devices.
+
     private static final int SAMPLE_RATE_HZ = 16000;
-    //声道数 CHANNEL_IN_STEREO是立体声。目前来看这个int值是12
-    //describes the configuration of the audio channels.
-    // See AudioFormat.CHANNEL_IN_MONO and AudioFormat.CHANNEL_IN_STEREO.
-    // AudioFormat.CHANNEL_IN_MONO是单声道，AudioFormat.CHANNEL_IN_STEREO是立体声，立体声就是双声道。
     private static final int CHANNEL_CONFIG = AudioFormat.CHANNEL_IN_STEREO;
-    //返回的音频数据的格式
-    //the format in which the audio data is to be returned. 音频数据的返回格式。
-    //See AudioFormat.ENCODING_PCM_8BIT, AudioFormat.ENCODING_PCM_16BIT, and AudioFormat.ENCODING_PCM_FLOAT.
     private static final int AUDIO_FORMAT = AudioFormat.ENCODING_PCM_16BIT;
 
     //核心类，Android系统的录音机
@@ -54,6 +45,8 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
         sPathWav = context.getFilesDir() + "/" + "abc.wav";
         Log.i(TAG, "init() sPathPcm: " + sPathPcm);
         Log.i(TAG, "init() sPathWav: " + sPathWav);
+        PcmToWavUtil ptwUtil = new PcmToWavUtil(SAMPLE_RATE_HZ, CHANNEL_CONFIG, AUDIO_FORMAT);
+        ptwUtil.pcmToWav(sPathPcm, sPathWav, true);
     }
 
     //开始录音的回调，被carlink sdk调用
@@ -77,7 +70,7 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
     public void onStopRecorder() {
         Log.d(TAG, "stopRecorder()");
         reset();
-//        convertPCM2WAV();
+        convertPCM2WAV();
     }
 
     private void reset() {
@@ -230,8 +223,8 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
         int size = mAudioBufSize;
         //存储录音数据的数组。因为sendMicRecordData的参数是short数组，所以这里就传了short数组。
         //因为short是2字节，byte是1字节，所以size要除以2。这样才会和byte[mAudioBufSize]的容量相等。
-        short[] audioData = new short[size];
-//        byte[] audioData = new byte[size];
+//        short[] audioData = new short[size];
+        byte[] audioData = new byte[size];
         //如果正在录音
         //会一直调用read方法读取数据
         while (mIsRecording) {
@@ -240,8 +233,8 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
             //本来这里audioRead要传byte数组，但是因为sendMicRecordData的参数是short数组，所以这里就传了short数组。
             int result = mAudioRecord.read(audioData, 0, size);
             if (result > 0) {
-                sendToCarLink(audioData, result);
-//                saveToLocal(fos, audioData);
+//                sendToCarLink(audioData, result);
+                saveToLocal(fos, audioData);
             }
         }
     }
