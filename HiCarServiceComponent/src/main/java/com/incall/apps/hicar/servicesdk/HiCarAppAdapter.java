@@ -118,13 +118,8 @@ public class HiCarAppAdapter {
         }
         // TODO: 2023/9/24  屏幕高度
         if (mScreenHeight != 0) {
-            if (mScreenHeight != 848) {
-                //dock栏高度：120
-                //状态栏高度：112
-                builder.withScreenHeight(mScreenHeight - 120 - 112);
-            } else {
-                builder.withScreenHeight(mScreenHeight);
-            }
+            //848
+            builder.withScreenHeight(mScreenHeight);
         }
         if (mScreenSize > 0.0f) {
             builder.withScreenSize(mScreenSize);

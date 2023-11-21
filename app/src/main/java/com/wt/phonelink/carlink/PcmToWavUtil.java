@@ -1,6 +1,5 @@
 package com.wt.phonelink.carlink;
 
-import android.media.AudioFormat;
 import android.media.AudioRecord;
 
 import java.io.File;
@@ -16,24 +15,11 @@ import java.io.IOException;
  * 描述：pcm格式的音频转换为wav格式的工具类
  */
 public class PcmToWavUtil {
-    private int mBufferSize; //缓存的音频大小
-    private int mSampleRate = 44100;// 此处的值必须与录音时的采样率一致
-    private int mChannel = AudioFormat.CHANNEL_IN_STEREO; //立体声
-    private int mEncoding = AudioFormat.ENCODING_PCM_16BIT;
- 
-    private static class SingleHolder {
-        static PcmToWavUtil mInstance = new PcmToWavUtil();
-    }
- 
-    public static PcmToWavUtil getInstance() {
-        return SingleHolder.mInstance;
-    }
- 
- 
-    public PcmToWavUtil() {
-        this.mBufferSize = AudioRecord.getMinBufferSize(mSampleRate, mChannel, mEncoding);
-    }
- 
+    //缓存的音频大小
+    private final int mBufferSize;
+    // 此处的值必须与录音时的采样率一致
+    private final int mSampleRate;
+
     /**
      * @param sampleRate sample rate、采样率
      * @param channel    channel、声道
@@ -41,11 +27,10 @@ public class PcmToWavUtil {
      */
     public PcmToWavUtil(int sampleRate, int channel, int encoding) {
         this.mSampleRate = sampleRate;
-        this.mChannel = channel;
-        this.mEncoding = encoding;
-        this.mBufferSize = AudioRecord.getMinBufferSize(mSampleRate, mChannel, mEncoding);
+        //立体声
+        this.mBufferSize = AudioRecord.getMinBufferSize(mSampleRate, channel, encoding);
     }
- 
+
     /**
      * pcm文件转wav文件
      *
@@ -67,7 +52,7 @@ public class PcmToWavUtil {
             out = new FileOutputStream(outFilename);
             totalAudioLen = in.getChannel().size();
             totalDataLen = totalAudioLen + 36;
- 
+
             writeWaveFileHeader(out, totalAudioLen, totalDataLen,
                     longSampleRate, channels, byteRate);
             while (in.read(data) != -1) {
@@ -82,11 +67,11 @@ public class PcmToWavUtil {
             e.printStackTrace();
         }
     }
- 
+
     public void pcmToWav(String inFilename, String outFilename) {
         pcmToWav(inFilename, outFilename, false);
     }
- 
+
     /**
      * 加入wav文件头
      */

@@ -78,7 +78,7 @@ import wtcl.lib.widget.WTButton;
 //carLink的连接界面
 public class CarLinkMainActivity extends PermissionsReqActivity {
     private static final String TAG = "WTPhoneLink/CarLinkMainActivity";
-    private ICarAudioRecorderListener mAudioRecorderListener;
+    private CarlinkCustomAudioRecord mAudioRecorderListener;
 
     public static final int MSG_ON_CONNECT_STATE_CHANGED = 101;
     public static final int MSG_START_ADVERTISE_SCAN_DEVICE = 102;
@@ -351,6 +351,7 @@ public class CarLinkMainActivity extends PermissionsReqActivity {
         setContentView(R.layout.activity_ucar_cast);
         WTSkinManager.get().addSkinChangedListener(mSkinChangedListener);
         mSharedPreferencesUtil = SharedPreferencesUtil.getInstance(MyApplication.getContext());
+
         initViewRefs();
         initUI();
     }
@@ -593,6 +594,7 @@ public class CarLinkMainActivity extends PermissionsReqActivity {
         }
         if (mUCarConfig.isUseCustomAudioRecord()) {
             mAudioRecorderListener = new CarlinkCustomAudioRecord();
+            mAudioRecorderListener.init(this);
             UCarAdapter.getInstance().registerAudioRecorderListener(mAudioRecorderListener);
         }
     }

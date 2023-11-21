@@ -1,7 +1,9 @@
 package com.wt.phonelink.carlink;
 
+import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.util.Log;
 
@@ -9,6 +11,9 @@ import com.ucar.vehiclesdk.ICarAudioRecorderListener;
 import com.ucar.vehiclesdk.UCarAdapter;
 import com.ucar.vehiclesdk.UCarCommon;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -36,21 +41,31 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
 
     //核心类，Android系统的录音机
     private AudioRecord mAudioRecord;
-    //录音的缓存大小
+    //录音的缓存大小。录音缓存是byte数据。
     private int mAudioBufSize = 0;
     //是否正在录音
     private volatile boolean mIsRecording = false;
 
+    private static String sPathPcm = "";
+    private static String sPathWav = "";
+
+    public void init(Context context) {
+        sPathPcm = context.getFilesDir() + "/" + "abc.pcm";
+        sPathWav = context.getFilesDir() + "/" + "abc.wav";
+        Log.i(TAG, "init() sPathPcm: " + sPathPcm);
+        Log.i(TAG, "init() sPathWav: " + sPathWav);
+    }
 
     //开始录音的回调，被carlink sdk调用
     @Override
     public void onStartRecorder(UCarCommon.AudioFormat format, boolean isCallActive) {
-        Log.d(TAG, "startRecorder: ");
-        initAudioRecord();
+        Log.d(TAG, "startRecorder()");
+        createAudioRecord();
+        startRecord();
         //开始录音，并获取录音数据
         new Thread(() -> {
-            startRecord();
-            getData();
+            Log.i(TAG, "onStartRecorder() 在新线程获取数据");
+            getAndSaveData();
         }).start();
     }
 
@@ -60,18 +75,33 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
     //被CarLink sdk调用
     @Override
     public void onStopRecorder() {
-        this.mIsRecording = false;
-        Log.d(TAG, "stopRecorder: ");
+        Log.d(TAG, "stopRecorder()");
+        reset();
+//        convertPCM2WAV();
     }
 
+    private void reset() {
+        this.mIsRecording = false;
+        Log.d(TAG, "reset()");
+        if (mAudioRecord != null) {
+            mAudioRecord.stop();
+            mAudioRecord.release();
+            mAudioRecord = null;
+        }
+    }
 
-    private void initAudioRecord() {
+    private static void convertPCM2WAV() {
+        PcmToWavUtil ptwUtil = new PcmToWavUtil(SAMPLE_RATE_HZ, CHANNEL_CONFIG, AUDIO_FORMAT);
+        ptwUtil.pcmToWav(sPathPcm, sPathWav, true);
+    }
+
+    private void createAudioRecord() {
         //onStartRecorder为开始录制，需车厂自己创建AudioRecord进行录制并且通过sendMicRecordData传输音频数据到手机
-        //初始化录音的缓存大小
-        boolean result = initBuffer();
-        Log.d(TAG, "result: " + result);
         // 车厂可以在此调整为自己所需的配置
         if (null == mAudioRecord) {
+            //初始化录音的缓存大小
+            boolean result = initBuffer();
+            Log.d(TAG, "createAudioRecord() result: " + result);
             //AudioRecord构造器
             AudioRecord.Builder builder = createAudioRecordBuilder();
             try {
@@ -84,7 +114,7 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
                     //使用Builder构造AudioRecord
                     mAudioRecord = builder.build();
                 } catch (UnsupportedOperationException exception) {
-                    Log.w(TAG, "initRecorder failed", exception);
+                    Log.w(TAG, "createAudioRecord() exception: ", exception);
                 }
             }
         }
@@ -133,6 +163,10 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
 
 
     private void startRecord() {
+        if (mAudioRecord == null) {
+            Log.e(TAG, "mAudioRecord is null! ");
+            return;
+        }
         if (mAudioRecord.getState() == AudioRecord.STATE_UNINITIALIZED) {
             Log.d(TAG, "run: ");
         }
@@ -164,12 +198,40 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
         }
     }
 
-    private void getData() {
-        //读取录音数据的大小
-        int size = mAudioBufSize / 2;
-        //存储录音数据的数组。本来这里audioRead要传byte数组，但是因为sendMicRecordData的参数是short数组，所以这里就传了short数组。
+    private void getAndSaveData() {
+        FileOutputStream fos = null;
+        try {
+            try {
+                File file = new File(sPathPcm);
+                if (!file.exists()) {
+                    boolean result = file.createNewFile();
+                    Log.i(TAG, "getAndSaveData() result: " + result);
+                }
+                fos = new FileOutputStream(file);
+                getData(fos);
+            } finally {
+                if (fos != null) {
+                    fos.close();
+                }
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "getAndSaveData() error: " + e.getLocalizedMessage());
+        }
+    }
+
+    private void getData(FileOutputStream fos) throws IOException {
+        if (mAudioRecord == null) {
+            Log.e(TAG, "mAudioRecord is null! ");
+            return;
+        }
+        //读取录音数据的大小。录音缓存是byte数据。
+        //short是byte的两倍，所以转换成short数据，这里size要除以2
+//        int size = mAudioBufSize / 2;
+        int size = mAudioBufSize;
+        //存储录音数据的数组。因为sendMicRecordData的参数是short数组，所以这里就传了short数组。
         //因为short是2字节，byte是1字节，所以size要除以2。这样才会和byte[mAudioBufSize]的容量相等。
         short[] audioData = new short[size];
+//        byte[] audioData = new byte[size];
         //如果正在录音
         //会一直调用read方法读取数据
         while (mIsRecording) {
@@ -178,12 +240,40 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
             //本来这里audioRead要传byte数组，但是因为sendMicRecordData的参数是short数组，所以这里就传了short数组。
             int result = mAudioRecord.read(audioData, 0, size);
             if (result > 0) {
-                Log.d(TAG, "custom record sendData, bodyLen: " + result);
-                Calendar calendar = new GregorianCalendar();
-                int time = (int) (calendar.getTimeInMillis() / 1000);
-                //发送mic数据。参数audioData是short类型。
-                UCarAdapter.getInstance().sendMicRecordData(result, audioData, time);
+                sendToCarLink(audioData, result);
+//                saveToLocal(fos, audioData);
             }
+        }
+    }
+
+
+    private static void sendToCarLink(short[] audioData, int result) {
+        Log.d(TAG, "custom record sendData, bodyLen: " + result);
+        Calendar calendar = new GregorianCalendar();
+        int time = (int) (calendar.getTimeInMillis() / 1000);
+        //发送mic数据。参数audioData是short类型。
+        UCarAdapter.getInstance().sendMicRecordData(result, audioData, time);
+    }
+
+    private static void saveToLocal(FileOutputStream fos, byte[] audioData) throws IOException {
+        if (fos != null) {
+            fos.write(audioData);
+        }
+    }
+
+    /**
+     * 使用MediaPlayer播放文件，并且指定一个当播放完成后会触发的监听器
+     */
+    private void playWavWithMediaPlayer(String filePath, MediaPlayer.OnCompletionListener onCompletionListener) {
+        Log.d(TAG, "playWavWithMediaPlayer()");
+        try {
+            MediaPlayer mediaPlayer = new MediaPlayer();
+            mediaPlayer.setDataSource(filePath);
+            mediaPlayer.setOnCompletionListener(onCompletionListener);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (Exception e) {
+            Log.e(TAG, "playWavWithMediaPlayer() e: " + e.getLocalizedMessage());
         }
     }
 
