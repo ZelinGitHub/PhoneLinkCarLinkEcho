@@ -10,6 +10,7 @@ import android.util.Log;
 import com.ucar.vehiclesdk.ICarAudioRecorderListener;
 import com.ucar.vehiclesdk.UCarAdapter;
 import com.ucar.vehiclesdk.UCarCommon;
+import com.ucar.vehiclesdk.recorder.AudioConfig;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,10 +27,6 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
     private static final long INTERVAL_RETRY = 10L;
 
 
-    private static final int SAMPLE_RATE_HZ = 16000;
-    private static final int CHANNEL_CONFIG = AudioFormat.CHANNEL_IN_STEREO;
-    private static final int AUDIO_FORMAT = AudioFormat.ENCODING_PCM_16BIT;
-
     //核心类，Android系统的录音机
     private AudioRecord mAudioRecord;
     //录音的缓存大小。录音缓存是byte数据。
@@ -40,25 +37,31 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
     private static String sPathPcm = "";
     private static String sPathWav = "";
 
+    private AudioConfig mAudioConfig;
+    private boolean mSupportStereoRecord = true;
+    private PcmToWavUtil mPtwUtil;
+
     public void init(Context context) {
         sPathPcm = context.getFilesDir() + "/" + "abc.pcm";
         sPathWav = context.getFilesDir() + "/" + "abc.wav";
         Log.i(TAG, "init() sPathPcm: " + sPathPcm);
         Log.i(TAG, "init() sPathWav: " + sPathWav);
-        PcmToWavUtil ptwUtil = new PcmToWavUtil(SAMPLE_RATE_HZ, CHANNEL_CONFIG, AUDIO_FORMAT);
-        ptwUtil.pcmToWav(sPathPcm, sPathWav, true);
     }
 
     //开始录音的回调，被carlink sdk调用
     @Override
     public void onStartRecorder(UCarCommon.AudioFormat format, boolean isCallActive) {
-        Log.d(TAG, "startRecorder()");
+        Log.d(TAG, "startRecorder() format: " + format);
+        //onStartRecorder为开始录制，需车厂自己创建AudioRecord进行录制并且通过sendMicRecordData传输音频数据到手机
+        mAudioConfig = AudioConfig.getCarConfig(format);
+        Log.d(TAG, "startRecorder() mAudioConfig: " + mAudioConfig);
         createAudioRecord();
         startRecord();
         //开始录音，并获取录音数据
         new Thread(() -> {
             Log.i(TAG, "onStartRecorder() 在新线程获取数据");
-            getAndSaveData();
+            getAndSendData();
+//            getAndSaveData();
         }).start();
     }
 
@@ -83,18 +86,14 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
         }
     }
 
-    private static void convertPCM2WAV() {
-        PcmToWavUtil ptwUtil = new PcmToWavUtil(SAMPLE_RATE_HZ, CHANNEL_CONFIG, AUDIO_FORMAT);
-        ptwUtil.pcmToWav(sPathPcm, sPathWav, true);
+    private void convertPCM2WAV() {
+        mPtwUtil.pcmToWav(sPathPcm, sPathWav, true);
     }
 
     private void createAudioRecord() {
         //onStartRecorder为开始录制，需车厂自己创建AudioRecord进行录制并且通过sendMicRecordData传输音频数据到手机
         // 车厂可以在此调整为自己所需的配置
         if (null == mAudioRecord) {
-            //初始化录音的缓存大小
-            boolean result = initBuffer();
-            Log.d(TAG, "createAudioRecord() result: " + result);
             //AudioRecord构造器
             AudioRecord.Builder builder = createAudioRecordBuilder();
             try {
@@ -113,47 +112,57 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
         }
     }
 
-    //初始化buffer
-    //获取录音的缓存大小
-    private boolean initBuffer() {
-        boolean result;
-        //如果音频格式是CHANNEL_IN_STEREO
-        //录音的缓存大小
-        mAudioBufSize = AudioRecord.getMinBufferSize(
-                SAMPLE_RATE_HZ,
-                CHANNEL_CONFIG,
-                AUDIO_FORMAT
-        );
-        result = mAudioBufSize != AudioRecord.ERROR_BAD_VALUE;
-        if (!result) {
-            Log.e(TAG, "initBuffer error!");
-        }
-        return result;
-    }
 
-
-    //创建AudioRecord构造器
     private AudioRecord.Builder createAudioRecordBuilder() {
-        //音频格式构造器
+        Log.i(TAG, "createAudioRecordBuilder() mAudioConfig: " + mAudioConfig);
+        int sampleRate;
+        int channelMask;
+        if (AudioFormat.CHANNEL_IN_STEREO == mAudioConfig.getChannel()) {
+            Log.d(TAG, "createAudioRecordBuilder() AudioConfig.getChannel() is CHANNEL_IN_STEREO");
+            if (mSupportStereoRecord) {
+                sampleRate = mAudioConfig.getSampleRate();
+                channelMask = mAudioConfig.getChannel();
+            } else {
+                sampleRate = mAudioConfig.getSampleRate() * 2;
+                channelMask = AudioFormat.CHANNEL_IN_MONO;
+            }
+        } else {
+            Log.d(TAG, "createAudioRecordBuilder() AudioConfig.getChannel() is not CHANNEL_IN_STEREO! ");
+            sampleRate = mAudioConfig.getSampleRate();
+            channelMask = mAudioConfig.getChannel();
+        }
+        int audioFormat = mAudioConfig.getFormat();
+        channelMask = AudioFormat.CHANNEL_IN_STEREO;
+//        sampleRate=16000;
+        //初始化录音的缓存大小
+        mAudioBufSize = AudioRecord.getMinBufferSize(sampleRate, channelMask, audioFormat);
+        if (mAudioBufSize == AudioRecord.ERROR_BAD_VALUE) {
+            Log.e(TAG, "createAudioRecord() initBuffer error!");
+        }
+        mPtwUtil = new PcmToWavUtil(sampleRate, channelMask, audioFormat);
+        Log.i(TAG, "createAudioRecordBuilder() " +
+                "sampleRate: " + sampleRate
+                + ", channelMask: " + channelMask
+                + " , audioFormat: " + audioFormat
+        );
         AudioFormat.Builder audioFormatBuilder = new AudioFormat.Builder();
-        //音频格式。使用音频格式构造器，构造音频格式
-        AudioFormat format =
-                audioFormatBuilder
-                        //设置采样率
-                        .setSampleRate(SAMPLE_RATE_HZ)
-                        //修改为立体声
-                        .setChannelIndexMask(0x03) // 2ch：0x03,4ch:0xf,6ch:0x3f
-                        //设置音频数据的返回格式
-                        .setEncoding(AUDIO_FORMAT)
-                        .build();
-        //AudioRecord构造器
+        audioFormatBuilder
+                //1 设置采样率
+                .setSampleRate(sampleRate)
+                //2 设置通道配置
+                .setChannelMask(channelMask)
+                //3 设置输出音频格式
+                .setEncoding(audioFormat);
+        AudioFormat format = audioFormatBuilder.build();
         return new AudioRecord.Builder()
-                //修改固定为mic类型
+                //1 设置音源类型
                 .setAudioSource(MediaRecorder.AudioSource.MIC)
+                //2 设置AudioFormat
                 .setAudioFormat(format)
+                //3 设置buffer
                 .setBufferSizeInBytes(mAudioBufSize);
-    }
 
+    }
 
     private void startRecord() {
         if (mAudioRecord == null) {
@@ -201,7 +210,22 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
                     Log.i(TAG, "getAndSaveData() result: " + result);
                 }
                 fos = new FileOutputStream(file);
-                getData(fos);
+                if (mAudioRecord == null) {
+                    Log.e(TAG, "mAudioRecord is null! ");
+                    return;
+                }
+                int size = mAudioBufSize;
+                byte[] audioData = new byte[size];
+                //如果正在录音
+                //会一直调用read方法读取数据
+                while (mIsRecording) {
+                    //使用AudioRecord读取数据
+                    //如果把读取到的数据保存下来是一个PCM文件
+                    int result = mAudioRecord.read(audioData, 0, size);
+                    if (result > 0) {
+                        saveToLocal(fos, audioData);
+                    }
+                }
             } finally {
                 if (fos != null) {
                     fos.close();
@@ -212,19 +236,18 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
         }
     }
 
-    private void getData(FileOutputStream fos) throws IOException {
+
+    private void getAndSendData() {
         if (mAudioRecord == null) {
             Log.e(TAG, "mAudioRecord is null! ");
             return;
         }
         //读取录音数据的大小。录音缓存是byte数据。
         //short是byte的两倍，所以转换成short数据，这里size要除以2
-//        int size = mAudioBufSize / 2;
-        int size = mAudioBufSize;
+        int size = mAudioBufSize / 2;
         //存储录音数据的数组。因为sendMicRecordData的参数是short数组，所以这里就传了short数组。
         //因为short是2字节，byte是1字节，所以size要除以2。这样才会和byte[mAudioBufSize]的容量相等。
-//        short[] audioData = new short[size];
-        byte[] audioData = new byte[size];
+        short[] audioData = new short[size];
         //如果正在录音
         //会一直调用read方法读取数据
         while (mIsRecording) {
@@ -233,15 +256,13 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
             //本来这里audioRead要传byte数组，但是因为sendMicRecordData的参数是short数组，所以这里就传了short数组。
             int result = mAudioRecord.read(audioData, 0, size);
             if (result > 0) {
-//                sendToCarLink(audioData, result);
-                saveToLocal(fos, audioData);
+                sendToCarLink(audioData, result);
             }
         }
     }
 
 
     private static void sendToCarLink(short[] audioData, int result) {
-        Log.d(TAG, "custom record sendData, bodyLen: " + result);
         Calendar calendar = new GregorianCalendar();
         int time = (int) (calendar.getTimeInMillis() / 1000);
         //发送mic数据。参数audioData是short类型。
