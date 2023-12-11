@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.wt.phonelink.hicar.HiCarMainActivity;
-import com.wt.phonelink.Contants;
 
 public class HiCarReceiver extends BroadcastReceiver {
     private static final String TAG = "WTPhoneLink/HiCarReceiver";
@@ -21,11 +21,11 @@ public class HiCarReceiver extends BroadcastReceiver {
             return;
         }
         String action = intent.getAction();
-        if (action != null && action.equals(ACTION_START_MAINACTIVITY) && !Contants.IS_FRONT) {
+        if (action != null && action.equals(ACTION_START_MAINACTIVITY) && !Constants.IS_HICAR_FRONT) {
             Log.d(TAG, "activityIntent: "+intent.getBooleanExtra("isConnect",false));
             Intent activityIntent = new Intent(context, HiCarMainActivity.class);
             activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            Contants.IS_BACKGROUND = intent.getBooleanExtra("isConnect",false);
+            Constants.IS_HICAR_BACKGROUND_CONNECT = intent.getBooleanExtra("isConnect",false);
             context.startActivity(activityIntent);
         }
     }

@@ -7,9 +7,8 @@ import android.provider.Settings;
 import android.util.Log;
 
 import com.huawei.hicarsdk.HiCarConst;
-import com.incall.apps.hicar.servicemanager.LogUtil;
 import com.incall.apps.hicar.servicesdk.ServiceManager;
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.incall.apps.hicar.servicesdk.contants.LaunchPhoneLinkEvent;
 import com.incall.apps.hicar.servicesdk.interfaces.BaseHiCarListener;
 import com.incall.apps.hicar.servicesdk.manager.HiCarServiceManager;
@@ -83,7 +82,7 @@ public class HiCarManagerImpl extends IHiCarManager.Stub {
     public void closeVoice() throws RemoteException {
         Log.i(TAG, "closeVoice()");
         audioManager.closeHiCarVoice();
-        ServiceManager.getInstance().postEvent(Contants.Event.DEVICE_SERVICE_PAUSE, null);
+        ServiceManager.getInstance().postEvent(Constants.Event.DEVICE_SERVICE_PAUSE, null);
     }
 
     @Override
@@ -104,9 +103,9 @@ public class HiCarManagerImpl extends IHiCarManager.Stub {
                 //设备连接
                 case HiCarConst.EVENT_DEVICE_CONNECT:
                     Log.i(TAG, "onDeviceChange() status:  " + i);
-                    sp.putBoolean(Contants.SP_IS_HICAR_CONNECT, true);
+                    sp.putBoolean(Constants.SP_IS_HICAR_CONNECT, true);
                     if (mContext != null) {
-                        setGlobalProp(mContext,Contants.SYS_IS_HICAR_CONNECT, 1);
+                        setGlobalProp(mContext, Constants.SYS_IS_HICAR_CONNECT, 1);
                     }
                     hiCarStatusChange(true);
                     voiceStatusChange(false);//hicar连接成功关闭车机语音助手免唤醒
@@ -114,9 +113,9 @@ public class HiCarManagerImpl extends IHiCarManager.Stub {
                 //设备断开连接
                 case HiCarConst.EVENT_DEVICE_DISCONNECT:
                     Log.i(TAG, "onDeviceChange() status: " + i);
-                    sp.putBoolean(Contants.SP_IS_HICAR_CONNECT, false);
+                    sp.putBoolean(Constants.SP_IS_HICAR_CONNECT, false);
                     if (mContext != null) {
-                        setGlobalProp(mContext,Contants.SYS_IS_HICAR_CONNECT, 0);
+                        setGlobalProp(mContext, Constants.SYS_IS_HICAR_CONNECT, 0);
                     }
                     hiCarStatusChange(false);
                     voiceStatusChange(true);//hicar断开连接打开车机语音助手免唤醒

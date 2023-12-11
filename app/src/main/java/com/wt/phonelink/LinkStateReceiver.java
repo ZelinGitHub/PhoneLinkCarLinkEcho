@@ -1,19 +1,16 @@
 package com.wt.phonelink;
 
+import static com.incall.apps.hicar.servicesdk.contants.Constants.*;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.incall.apps.hicar.servicesdk.utils.SharedPreferencesUtil;
 
-import static com.wt.phonelink.Contants.IS_WTBOX_FRONT;
-import static com.wt.phonelink.Contants.STATE_WINDOW_FLOAT;
-import static com.wt.phonelink.Contants.STATE_WINDOW_MAXIMIZE;
-import static com.wt.phonelink.Contants.STATE_WINDOW_MINIMIZE;
 
 public class LinkStateReceiver extends BroadcastReceiver {
     private static final String TAG = "WTPhoneLink/LinkStateReceiver";
@@ -36,21 +33,21 @@ public class LinkStateReceiver extends BroadcastReceiver {
                 case 0:
                 default:
                     IS_WTBOX_FRONT = false;
-                    sp.putBoolean(Contants.SP_IS_WTBOX_CONNECT, false);
+                    sp.putBoolean(Constants.SP_IS_WTBOX_CONNECT, false);
                     break;
                 case STATE_WINDOW_FLOAT:
                 case STATE_WINDOW_MAXIMIZE:
                     IS_WTBOX_FRONT = true;
-                    sp.putBoolean(Contants.SP_IS_WTBOX_CONNECT, true);
+                    sp.putBoolean(Constants.SP_IS_WTBOX_CONNECT, true);
                     break;
                 case STATE_WINDOW_MINIMIZE:
                     IS_WTBOX_FRONT = false;
-                    sp.putBoolean(Contants.SP_IS_WTBOX_CONNECT, true);
+                    sp.putBoolean(Constants.SP_IS_WTBOX_CONNECT, true);
                     break;
             }
         }
         SharedPreferencesUtil sp = SharedPreferencesUtil.getInstance(MyApplication.getContext());
-        boolean isWTBoxConnect = sp.getBoolean(Contants.SP_IS_WTBOX_CONNECT);
+        boolean isWTBoxConnect = sp.getBoolean(Constants.SP_IS_WTBOX_CONNECT);
         Log.e(TAG, "onReceive() isWTBoxConnect: " + isWTBoxConnect);
     }
 

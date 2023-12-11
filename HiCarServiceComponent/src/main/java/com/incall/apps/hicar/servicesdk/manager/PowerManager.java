@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.incall.apps.hicar.servicemanager.LogUtil;
 import com.incall.apps.hicar.servicesdk.ServiceManager;
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.openos.virtualcar.VirtualCar;
 import com.openos.virtualcar.VirtualCarPropertyCallBack;
 import com.openos.virtualcar.VirtualCarPropertyManager;
@@ -68,7 +68,7 @@ public class PowerManager {
                                  */
                                 LogUtil.d(TAG, "registerVirtualCarListener 电源状态  " + status);
                                 if (status == VirtualCarSensorFunction.IgnitionStatus.IGNITION_STATE_OFF) {
-                                    ServiceManager.getInstance().postEvent(Contants.Event.ACC_OFF, null);
+                                    ServiceManager.getInstance().postEvent(Constants.Event.ACC_OFF, null);
                                 }
                                 break;
                             default:

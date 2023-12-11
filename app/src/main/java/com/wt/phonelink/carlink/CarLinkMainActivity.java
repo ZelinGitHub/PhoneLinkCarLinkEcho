@@ -20,16 +20,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.incall.apps.hicar.servicesdk.manager.BTManager;
 import com.incall.apps.hicar.servicesdk.manager.CarManager;
 import com.incall.apps.hicar.servicesdk.servicesimpl.audio.HcAudioManager;
 import com.incall.apps.hicar.servicesdk.utils.SharedPreferencesUtil;
 import com.openos.skin.WTSkinManager;
-import com.openos.skin.info.SkinInfo;
 import com.ucar.sdk.BuildConfig;
 import com.ucar.vehiclesdk.ICameraInfoListener;
-import com.ucar.vehiclesdk.ICarAudioRecorderListener;
 import com.ucar.vehiclesdk.ICarConnectListener;
 import com.ucar.vehiclesdk.ICarInitCallback;
 import com.ucar.vehiclesdk.IPhoneDataListener;
@@ -57,10 +55,10 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Random;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import static com.incall.apps.hicar.servicesdk.contants.Constants.IS_CARLINK_FRONT;
 import static com.ucar.vehiclesdk.UCarConnectState.ConnectType.CONNECT_TYPE_WIFI_P2P;
 import static com.ucar.vehiclesdk.UCarConnectState.ConnectType.CONNECT_TYPE_WIFI_SOFT_AP;
 import static com.ucar.vehiclesdk.UCarConnectState.DISCONNECT_BY_USER;
@@ -70,7 +68,6 @@ import static com.ucar.vehiclesdk.UCarConnectState.UCAR_DEVICE_CONNECTED;
 import static com.ucar.vehiclesdk.UCarConnectState.UCAR_DEVICE_CONNECT_FAILED;
 import static com.ucar.vehiclesdk.UCarConnectState.UCAR_DEVICE_DISCONNECT;
 import static com.ucar.vehiclesdk.UCarConnectState.UCAR_DEVICE_GO_TO_HOME;
-import static com.wt.phonelink.Contants.IS_CARLINK_FRONT;
 
 import wtcl.lib.theme.WTThemeManager;
 import wtcl.lib.widget.WTButton;
@@ -425,8 +422,8 @@ public class CarLinkMainActivity extends PermissionsReqActivity {
                 } else {
                     phoneDevice = phoneDeviceName;
                 }
-                mSharedPreferencesUtil.putString(Contants.SP_PHONE_BRAND, phoneDevice);
-                mSharedPreferencesUtil.putString(Contants.SP_PHONE_MODEL, phoneModelStr);
+                mSharedPreferencesUtil.putString(Constants.SP_PHONE_BRAND, phoneDevice);
+                mSharedPreferencesUtil.putString(Constants.SP_PHONE_MODEL, phoneModelStr);
             }
 
 
@@ -609,8 +606,8 @@ public class CarLinkMainActivity extends PermissionsReqActivity {
         int state = args.getInt("STATE");
         int parameter = args.getInt("PARAMETER");
 
-        String phoneBrand = mSharedPreferencesUtil.getString(Contants.SP_PHONE_BRAND);
-        String phoneModel = mSharedPreferencesUtil.getString(Contants.SP_PHONE_MODEL);
+        String phoneBrand = mSharedPreferencesUtil.getString(Constants.SP_PHONE_BRAND);
+        String phoneModel = mSharedPreferencesUtil.getString(Constants.SP_PHONE_MODEL);
 
         Log.i(TAG, "handleConnectStateChangedMessage() state: " + state);
 
@@ -623,12 +620,12 @@ public class CarLinkMainActivity extends PermissionsReqActivity {
                 handleDisconnected(deviceID, isDisconnectByUser);
 
                 if (isDisconnectByUser) {
-                    WTStatisticsUtil.connectStatus(Contants.SERVER_BREAKLINK, 2, phoneBrand, phoneModel);
+                    WTStatisticsUtil.connectStatus(Constants.SERVER_BREAKLINK, 2, phoneBrand, phoneModel);
                 }
-                mSharedPreferencesUtil.putBoolean(Contants.SP_IS_CARLINK_CONNECT, false);
+                mSharedPreferencesUtil.putBoolean(Constants.SP_IS_CARLINK_CONNECT, false);
                 //连接断开，打开蓝牙
                 BTManager.getInstance().bluetoothOn();
-                CommonUtil.setGlobalProp(getApplicationContext(), Contants.SYS_IS_CARLINK_CONNECT, 0);
+                CommonUtil.setGlobalProp(getApplicationContext(), Constants.SYS_IS_CARLINK_CONNECT, 0);
                 stopLauncherFloater();
                 VoiceManager.getInstance().unRegisterWakeUp();
                 break;
@@ -664,19 +661,19 @@ public class CarLinkMainActivity extends PermissionsReqActivity {
                 setCastSurfaceVisibility(true);
                 //关闭进度条
                 mHandler.sendEmptyMessage(MSG_CLOSE_PROGRESS);
-                WTStatisticsUtil.connectStatus(Contants.SERVER_LINK, 2, phoneBrand, phoneModel);
+                WTStatisticsUtil.connectStatus(Constants.SERVER_LINK, 2, phoneBrand, phoneModel);
                 //保存连接状态到sp
-                mSharedPreferencesUtil.putBoolean(Contants.SP_IS_CARLINK_CONNECT, true);
-                CommonUtil.setGlobalProp(getApplicationContext(), Contants.SYS_IS_CARLINK_CONNECT, 1);
+                mSharedPreferencesUtil.putBoolean(Constants.SP_IS_CARLINK_CONNECT, true);
+                CommonUtil.setGlobalProp(getApplicationContext(), Constants.SYS_IS_CARLINK_CONNECT, 1);
                 break;
             //投屏断开连接
             case UCAR_DEVICE_CAST_DISCONNECTED:
                 Log.d(TAG, "handleConnectStateChangedMessage() cast disconnected");
                 mIsCastSucceed = false;
                 setCastSurfaceVisibility(false);
-                WTStatisticsUtil.connectStatus(Contants.SERVER_BREAKLINK, 2, phoneBrand, phoneModel);
-                mSharedPreferencesUtil.putBoolean(Contants.SP_IS_CARLINK_CONNECT, false);
-                CommonUtil.setGlobalProp(getApplicationContext(), Contants.SYS_IS_CARLINK_CONNECT, 0);
+                WTStatisticsUtil.connectStatus(Constants.SERVER_BREAKLINK, 2, phoneBrand, phoneModel);
+                mSharedPreferencesUtil.putBoolean(Constants.SP_IS_CARLINK_CONNECT, false);
+                CommonUtil.setGlobalProp(getApplicationContext(), Constants.SYS_IS_CARLINK_CONNECT, 0);
                 break;
             //回到车机桌面
             case UCAR_DEVICE_GO_TO_HOME:
@@ -1030,8 +1027,8 @@ public class CarLinkMainActivity extends PermissionsReqActivity {
             mHandler = null;
         }
         WTSkinManager.get().removeSkinChangedListener(mSkinChangedListener);
-        mSharedPreferencesUtil.putBoolean(Contants.SP_IS_CARLINK_CONNECT, false);
-        CommonUtil.setGlobalProp(getApplicationContext(), Contants.SYS_IS_CARLINK_CONNECT, 0);
+        mSharedPreferencesUtil.putBoolean(Constants.SP_IS_CARLINK_CONNECT, false);
+        CommonUtil.setGlobalProp(getApplicationContext(), Constants.SYS_IS_CARLINK_CONNECT, 0);
         UCarAdapter.getInstance().unregisterCarConnectListener(mConnectCallback);
         UCarAdapter.getInstance().unregisterPhoneDataListener(mPhoneDataCallback);
         UCarAdapter.getInstance().unregisterCameraInfoListener(mCameraInfoCallback);

@@ -1,6 +1,6 @@
 package com.wt.phonelink;
 
-import static com.wt.phonelink.Contants.IS_WTBOX_FRONT;
+import static Contants.IS_WTBOX_FRONT;
 import static com.wt.phonelink.ScreenStatusMonitor.TYPE_ALL_HIDE;
 import static com.wt.phonelink.ScreenStatusMonitor.TYPE_LEFT_SHOW;
 import static com.wt.phonelink.ScreenStatusMonitor.TYPE_RIGHT_SHOW;
@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
         resumeTime = System.currentTimeMillis();
         Log.d(TAG, "onResume() resumeTime: " + resumeTime);
         initLayoutActivity();
-        com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT = true;
+        Contants.IS_PHONE_LINK_FRONT = true;
         boolean isWTBoxConnect = sp.getBoolean(Contants.SP_IS_WTBOX_CONNECT);
         Log.e(TAG, "onResume() isWTBoxConnect: " + isWTBoxConnect);
         if (isWTBoxConnect) {
@@ -356,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause()");
-        com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT = false;
+        Contants.IS_PHONE_LINK_FRONT = false;
         //注销屏幕状态监听
         ScreenStatusMonitor.getInstance(this).removeListener(mListener);
     }
@@ -365,14 +365,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop()");
-        com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT = false;
+        Contants.IS_PHONE_LINK_FRONT = false;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
-        com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT = false;
+        Contants.IS_PHONE_LINK_FRONT = false;
         VoiceUtils.getInstance().stopOrResumeVr(true);
         carPowerManager.clearListener();
         WTSkinManager.get().removeSkinChangedListener(skinChangedListener);//防止内存泄漏

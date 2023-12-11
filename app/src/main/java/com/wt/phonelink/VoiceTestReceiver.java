@@ -1,18 +1,12 @@
 package com.wt.phonelink;
 
-import static com.wt.phonelink.Contants.IS_WTBOX_FRONT;
-import static com.wt.phonelink.Contants.STATE_WINDOW_FLOAT;
-import static com.wt.phonelink.Contants.STATE_WINDOW_MAXIMIZE;
-import static com.wt.phonelink.Contants.STATE_WINDOW_MINIMIZE;
+
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
-
-import com.incall.apps.hicar.servicesdk.contants.Contants;
-import com.incall.apps.hicar.servicesdk.utils.SharedPreferencesUtil;
 
 public class VoiceTestReceiver extends BroadcastReceiver {
     private static final String TAG = "WTPhoneLink/VoiceTestReceiver";

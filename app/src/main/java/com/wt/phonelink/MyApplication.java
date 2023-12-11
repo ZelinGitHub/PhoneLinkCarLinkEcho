@@ -1,18 +1,12 @@
 package com.wt.phonelink;
 
 import android.app.Application;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.os.StrictMode;
 import android.util.Log;
 
 import com.incall.apps.hicar.servicemanager.LogUtil;
-import com.incall.apps.hicar.servicesdk.HiCarManagerService;
-import com.incall.apps.hicar.servicesdk.HiCarService;
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.incall.apps.hicar.servicesdk.utils.SharedPreferencesUtil;
 import com.openos.common.WTConfigure;
 import com.openos.skin.WTSkinManager;
@@ -36,11 +30,11 @@ public class MyApplication extends Application {
         WTConfigure.init(this, "fbb6ff7c43782cc6b3c6fa727eae060e", null);
         sp = SharedPreferencesUtil.getInstance(MyApplication.getContext());
         //进入程序的时候初始化sp的值
-        sp.putBoolean(Contants.SP_IS_WTBOX_CONNECT, false);
-        sp.putBoolean(Contants.SP_IS_HICAR_CONNECT, false);
-        CommonUtil.setGlobalProp(getApplicationContext(), Contants.SYS_IS_HICAR_CONNECT, 0);
-        sp.putBoolean(Contants.SP_IS_CARLINK_CONNECT, false);
-        CommonUtil.setGlobalProp(getApplicationContext(), Contants.SYS_IS_CARLINK_CONNECT, 0);
+        sp.putBoolean(Constants.SP_IS_WTBOX_CONNECT, false);
+        sp.putBoolean(Constants.SP_IS_HICAR_CONNECT, false);
+        CommonUtil.setGlobalProp(getApplicationContext(), Constants.SYS_IS_HICAR_CONNECT, 0);
+        sp.putBoolean(Constants.SP_IS_CARLINK_CONNECT, false);
+        CommonUtil.setGlobalProp(getApplicationContext(), Constants.SYS_IS_CARLINK_CONNECT, 0);
         //初始化语音管理器
         VoiceManager.getInstance().init(this);
         WTSkinManager.init(this);
@@ -64,12 +58,12 @@ public class MyApplication extends Application {
     public void onTerminate() {
         super.onTerminate();
         LogUtil.d("onTerminate()");
-        sp.putBoolean(Contants.SP_IS_WTBOX_CONNECT, false);
-        sp.putBoolean(Contants.SP_IS_HICAR_CONNECT, false);
-        CommonUtil.setGlobalProp(getApplicationContext(), Contants.SYS_IS_HICAR_CONNECT, 0);
-        sp.putBoolean(Contants.SP_IS_CARLINK_CONNECT, false);
-        CommonUtil.setGlobalProp(getApplicationContext(), Contants.SYS_IS_CARLINK_CONNECT, 0);
-        com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT = false;
+        sp.putBoolean(Constants.SP_IS_WTBOX_CONNECT, false);
+        sp.putBoolean(Constants.SP_IS_HICAR_CONNECT, false);
+        CommonUtil.setGlobalProp(getApplicationContext(), Constants.SYS_IS_HICAR_CONNECT, 0);
+        sp.putBoolean(Constants.SP_IS_CARLINK_CONNECT, false);
+        CommonUtil.setGlobalProp(getApplicationContext(), Constants.SYS_IS_CARLINK_CONNECT, 0);
+        Constants.IS_PHONE_LINK_FRONT = false;
         VoiceUtils.getInstance().stopOrResumeVr(true);
         LinkStateReceiver.unregister(this);
         VoiceTestReceiver.unregister(this);

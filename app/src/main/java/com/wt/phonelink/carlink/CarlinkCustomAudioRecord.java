@@ -19,7 +19,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 //这个类的对象将被注册到UCarAdapter，在开始录音和结束录音时调用
-public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
+public class   CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
     private static final String TAG = "PhoneLink/CarlinkCustomAudioRecord";
     //录音失败的最大重试次数
     public static final int MAX_RETRY_COUNT = 15;
@@ -51,10 +51,10 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
     //开始录音的回调，被carlink sdk调用
     @Override
     public void onStartRecorder(UCarCommon.AudioFormat format, boolean isCallActive) {
-        Log.d(TAG, "startRecorder() format: " + format);
+        Log.d(TAG, "onStartRecorder() format: " + format);
         //onStartRecorder为开始录制，需车厂自己创建AudioRecord进行录制并且通过sendMicRecordData传输音频数据到手机
         mAudioConfig = AudioConfig.getCarConfig(format);
-        Log.d(TAG, "startRecorder() mAudioConfig: " + mAudioConfig);
+        Log.d(TAG, "onStartRecorder() mAudioConfig: " + mAudioConfig);
         createAudioRecord();
         startRecord();
         //开始录音，并获取录音数据
@@ -132,7 +132,7 @@ public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
             channelMask = mAudioConfig.getChannel();
         }
         int audioFormat = mAudioConfig.getFormat();
-        channelMask = AudioFormat.CHANNEL_IN_STEREO;
+//        channelMask = AudioFormat.CHANNEL_IN_STEREO;
 //        sampleRate=16000;
         //初始化录音的缓存大小
         mAudioBufSize = AudioRecord.getMinBufferSize(sampleRate, channelMask, audioFormat);

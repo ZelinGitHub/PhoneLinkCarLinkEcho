@@ -3,7 +3,7 @@ package com.wt.phonelink.utils;
 import android.content.Context;
 import android.util.Log;
 
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.openos.statistics.WTClickAgent;
 import com.wt.phonelink.MyApplication;
 
@@ -25,7 +25,7 @@ public class WTStatisticsUtil {
     public static void showHomePage(int method) {
         HashMap<String, Object> hashMap = new HashMap();
         hashMap.put("method", method);
-        WTStatisticsUtil.onEvent(MyApplication.getContext(), Contants.SHOW_HOME_PAGE, hashMap);
+        WTStatisticsUtil.onEvent(MyApplication.getContext(), Constants.SHOW_HOME_PAGE, hashMap);
     }
 
     /**

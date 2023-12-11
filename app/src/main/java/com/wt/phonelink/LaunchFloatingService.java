@@ -21,7 +21,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.incall.apps.hicar.servicesdk.utils.SharedPreferencesUtil;
 import com.wt.phonelink.carlink.CarLinkMainActivity;
 import com.wt.phonelink.hicar.HiCarMainActivity;
@@ -165,9 +165,9 @@ public class LaunchFloatingService extends Service {
     public void toHicarOrCarlink(){
         SharedPreferencesUtil sp = SharedPreferencesUtil.getInstance(MyApplication.getContext());
         //hiCar是否连接
-        boolean isHiCarConnect = sp.getBoolean(com.incall.apps.hicar.servicesdk.contants.Contants.SP_IS_HICAR_CONNECT);
+        boolean isHiCarConnect = sp.getBoolean(Constants.SP_IS_HICAR_CONNECT);
         //carLink是否连接
-        boolean isCarLinkConnect = sp.getBoolean(Contants.SP_IS_CARLINK_CONNECT);
+        boolean isCarLinkConnect = sp.getBoolean(Constants.SP_IS_CARLINK_CONNECT);
         if (isHiCarConnect) {
             Intent intent = new Intent(this, HiCarMainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

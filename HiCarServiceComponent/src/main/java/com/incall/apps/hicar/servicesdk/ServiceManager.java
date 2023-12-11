@@ -1,7 +1,7 @@
 package com.incall.apps.hicar.servicesdk;
 
 import com.incall.apps.hicar.servicemanager.BaseCaServiceManager;
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.incall.apps.hicar.servicesdk.servicesimpl.APConnectServiceImpl;
 import com.incall.apps.hicar.servicemanager.service.ICAService;
 import com.incall.apps.hicar.servicesdk.servicesimpl.MainServiceImpl;
@@ -27,9 +27,9 @@ public class ServiceManager extends BaseCaServiceManager {
 
     private void initService() {
         //先调用getService方法，然后再registerService
-        registerService(Contants.Services.PIN_SERVICE, getService(Contants.Services.PIN_SERVICE));
+        registerService(Constants.Services.PIN_SERVICE, getService(Constants.Services.PIN_SERVICE));
         //先调用getService方法，然后再registerService
-        registerService(Contants.Services.MAIN_SERVICE, getService(Contants.Services.MAIN_SERVICE));
+        registerService(Constants.Services.MAIN_SERVICE, getService(Constants.Services.MAIN_SERVICE));
     }
 
 
@@ -43,14 +43,14 @@ public class ServiceManager extends BaseCaServiceManager {
     private ICAService getService(String serviceName) {
         switch (serviceName) {
             //连接码服务，也叫蓝牙扫描服务
-            case Contants.Services.PIN_SERVICE:
+            case Constants.Services.PIN_SERVICE:
                 if (apConnectService == null) {
                     //创建蓝牙设备扫描连接服务
                     //APConnectServiceImpl这个类里面目前什么都没有。
                     apConnectService = new APConnectServiceImpl();
                 }
                 return apConnectService;
-            case Contants.Services.MAIN_SERVICE:
+            case Constants.Services.MAIN_SERVICE:
                 if (mainService == null) {
                     //主服务
                     //在构造方法中，会注册MainServiceImpl到HiCarServiceManager的mListenerList

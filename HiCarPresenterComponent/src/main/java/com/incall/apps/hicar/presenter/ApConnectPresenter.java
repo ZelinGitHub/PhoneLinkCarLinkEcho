@@ -6,7 +6,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.incall.apps.hicar.iview.IAPConnetcView;
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.incall.apps.hicar.servicemanager.event.ICAEventListener;
 
 import java.util.HashMap;
@@ -26,12 +26,12 @@ public class ApConnectPresenter extends BasePresenter<IAPConnetcView> {
             @Override
             public void onEvent(String eventName, Object message) {
                 Log.d(TAG, "eventName: " + eventName + ", message: " + message);
-                if (eventName.equals(Contants.Event.PIN_CODE_CHANGE)) {//发送连接码改变的消息  消息内容是连接码字符串
+                if (eventName.equals(Constants.Event.PIN_CODE_CHANGE)) {//发送连接码改变的消息  消息内容是连接码字符串
                     apConnectHandler.sendMessage(apConnectHandler.obtainMessage(MSG_PIN_CODE_CHANGE, message));
                 }
             }
         };
-        serviceManager.addEventListener(Contants.Event.PIN_CODE_CHANGE, eventListener);
+        serviceManager.addEventListener(Constants.Event.PIN_CODE_CHANGE, eventListener);
         Log.d(TAG, "ApConnectPresenter()");
     }
 
@@ -68,12 +68,12 @@ public class ApConnectPresenter extends BasePresenter<IAPConnetcView> {
     public void startHicarAdv() {
         Log.d(TAG, "startHicarAdv=" );
         HashMap<String, Object> params = new HashMap<>();
-        serviceManager.callServiceSync(Contants.Services.MAIN_SERVICE, Contants.Method.START_HICAR_ADV, params);
+        serviceManager.callServiceSync(Constants.Services.MAIN_SERVICE, Constants.Method.START_HICAR_ADV, params);
     }
 
     public void stopHiCarAdv() {
         HashMap<String, Object> params = new HashMap<>();
-        serviceManager.callServiceSync(Contants.Services.MAIN_SERVICE, Contants.Method.STOP_HICAR_ADV, params);
+        serviceManager.callServiceSync(Constants.Services.MAIN_SERVICE, Constants.Method.STOP_HICAR_ADV, params);
     }
 
     //得到连接码
@@ -82,7 +82,7 @@ public class ApConnectPresenter extends BasePresenter<IAPConnetcView> {
         //启动服务，获取连接码
         //注意看服务的名字是Contants.Services.MAIN_SERVICE
         //会调用MainServiceImpl的callMethodSync方法
-        return serviceManager.callServiceSync(Contants.Services.MAIN_SERVICE, Contants.Method.GET_PINCODE, params).toString();
+        return serviceManager.callServiceSync(Constants.Services.MAIN_SERVICE, Constants.Method.GET_PINCODE, params).toString();
     }
 
     /**
@@ -91,6 +91,6 @@ public class ApConnectPresenter extends BasePresenter<IAPConnetcView> {
     public void disconnectBlueTooth() {
         Log.i(TAG, "disconnectBlueTooth ");
         HashMap<String, Object> params = new HashMap<>();
-        serviceManager.callServiceSync(Contants.Services.MAIN_SERVICE, Contants.Method. DISCONNECT_BT, params);
+        serviceManager.callServiceSync(Constants.Services.MAIN_SERVICE, Constants.Method. DISCONNECT_BT, params);
     }
 }

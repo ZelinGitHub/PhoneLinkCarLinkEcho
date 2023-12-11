@@ -1,6 +1,6 @@
 package com.wt.phonelink;
 
-import static com.wt.phonelink.Contants.IS_WTBOX_FRONT;
+import static com.incall.apps.hicar.servicesdk.contants.Constants.IS_WTBOX_FRONT;
 
 import android.car.Car;
 import android.car.hardware.power.CarPowerManager;
@@ -20,7 +20,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 
 import com.incall.apps.hicar.servicesdk.PhoneLinkStateManager;
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.incall.apps.hicar.servicesdk.manager.HiCarServiceManager;
 import com.incall.apps.hicar.servicesdk.utils.SharedPreferencesUtil;
 import com.openos.skin.WTSkinManager;
@@ -59,15 +59,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             boolean nightMode = newInfo.getSkinParams().getBoolean("NightMode", false);
             Log.i(TAG, "onSkinChanged() nightMode: " + nightMode);
             //hiCar是否连接
-            boolean isHiCarConnect = sp.getBoolean(Contants.SP_IS_HICAR_CONNECT);
+            boolean isHiCarConnect = sp.getBoolean(Constants.SP_IS_HICAR_CONNECT);
             //carLink是否连接
-            boolean isCarLinkConnect = sp.getBoolean(Contants.SP_IS_CARLINK_CONNECT);
+            boolean isCarLinkConnect = sp.getBoolean(Constants.SP_IS_CARLINK_CONNECT);
             Log.d(TAG, "onSkinChanged() isHiCarConnect: " + isHiCarConnect + "，isCarLinkConnect: " + isCarLinkConnect);
             //如果hiCar已经连接
             if (isHiCarConnect) {
                 byte[] bytes = nightMode ? com.incall.apps.hicar.servicesdk.utils.CommonUtil.getDayNightMode("night")
                         : com.incall.apps.hicar.servicesdk.utils.CommonUtil.getDayNightMode("day");
-                HiCarServiceManager.getInstance().sendCarData(Contants.HiCarCons.DATA_TYPE_DAY_NIGHT_MODE, bytes);
+                HiCarServiceManager.getInstance().sendCarData(Constants.HiCarCons.DATA_TYPE_DAY_NIGHT_MODE, bytes);
                 return;
             }
             //如果carLink已经连接
@@ -193,8 +193,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resumeTime = System.currentTimeMillis();
         Log.d(TAG, "onResume() resumeTime: " + resumeTime);
         initLayoutActivity();
-        com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT = true;
-        boolean isWTBoxConnect = sp.getBoolean(Contants.SP_IS_WTBOX_CONNECT);
+        Constants.IS_PHONE_LINK_FRONT = true;
+        boolean isWTBoxConnect = sp.getBoolean(Constants.SP_IS_WTBOX_CONNECT);
         Log.e(TAG, "onResume() isWTBoxConnect: " + isWTBoxConnect);
         if (isWTBoxConnect) {
             Log.e(TAG, "onResume() 手机盒子已经启动，关闭手机互联");
@@ -219,8 +219,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initLayoutActivity() {
-        boolean isHiCarConnect = sp.getBoolean(Contants.SP_IS_HICAR_CONNECT);
-        boolean isCarLinkConnect = sp.getBoolean(Contants.SP_IS_CARLINK_CONNECT);
+        boolean isHiCarConnect = sp.getBoolean(Constants.SP_IS_HICAR_CONNECT);
+        boolean isCarLinkConnect = sp.getBoolean(Constants.SP_IS_CARLINK_CONNECT);
         Log.i(TAG, "initLayoutActivity() isHiCarConnect: " + isHiCarConnect);
         Log.i(TAG, "initLayoutActivity() isCarLinkConnect: " + isCarLinkConnect);
         if (isHiCarConnect) {
@@ -234,21 +234,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause()");
-        com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT = false;
+        Constants.IS_PHONE_LINK_FRONT = false;
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop()");
-        com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT = false;
+        Constants.IS_PHONE_LINK_FRONT = false;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
-        com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT = false;
+        Constants.IS_PHONE_LINK_FRONT = false;
         VoiceUtils.getInstance().stopOrResumeVr(true);
         carPowerManager.clearListener();
         WTSkinManager.get().removeSkinChangedListener(skinChangedListener);//防止内存泄漏

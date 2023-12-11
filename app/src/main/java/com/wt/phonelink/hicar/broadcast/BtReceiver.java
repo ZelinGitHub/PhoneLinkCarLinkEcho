@@ -8,11 +8,8 @@ import android.content.IntentFilter;
 import android.util.Log;
 
 import com.incall.apps.hicar.servicesdk.PhoneLinkStateManager;
-import com.incall.apps.hicar.servicesdk.contants.Contants;
-import com.incall.apps.hicar.servicesdk.manager.HiCarServiceManager;
 import com.incall.apps.hicar.servicesdk.utils.CommonUtil;
 import com.incall.apps.hicar.servicesdk.utils.SharedPreferencesUtil;
-import com.wt.phonelink.MyApplication;
 
 /**
  * @Author: LuoXia

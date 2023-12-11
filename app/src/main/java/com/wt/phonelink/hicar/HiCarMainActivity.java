@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.incall.apps.hicar.iview.IMainView;
 import com.incall.apps.hicar.presenter.MainPresenter;
 import com.incall.apps.hicar.servicesdk.HiCarService;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.incall.apps.hicar.servicesdk.contants.HicarCallStatusFocusEvent;
 import com.incall.apps.hicar.servicesdk.contants.LaunchPhoneLinkEvent;
 import com.incall.apps.hicar.servicesdk.manager.BTManager;
@@ -21,7 +22,6 @@ import com.incall.apps.hicar.servicesdk.manager.HiCarServiceManager;
 import com.incall.apps.hicar.servicesdk.utils.SharedPreferencesUtil;
 import com.incall.apps.hicar.servicesdk.utils.SystemProperties;
 import com.openos.skin.WTSkinManager;
-import com.wt.phonelink.Contants;
 import com.wt.phonelink.MyApplication;
 import com.wt.phonelink.R;
 import com.wt.phonelink.VoiceManager;
@@ -139,7 +139,7 @@ public class HiCarMainActivity extends AppCompatActivity implements IMainView {
         Log.i(TAG, "onDeviceConnect()");
         //设备连接后，切换到华为hicar投影Fragment
         //连接之后，才开始投屏。投屏是在HiCarFragment的surface监听中调用的。
-        switchFragment(Contants.FragmentCon.TAG_HICAR_SCREEN);
+        switchFragment(Constants.FragmentCon.TAG_HICAR_SCREEN);
         //注册场景内语音
         VoiceManager.getInstance().registerHiCarWakeUp();
     }
@@ -190,7 +190,7 @@ public class HiCarMainActivity extends AppCompatActivity implements IMainView {
     @Override
     public void onDeviceDisplayServicePlayFailed() {
         Log.i(TAG, "onDeviceDisplayServicePlayFailed()");
-        switchFragment(Contants.FragmentCon.TAG_HICAR_FAILED);
+        switchFragment(Constants.FragmentCon.TAG_HICAR_FAILED);
     }
 
     //蓝牙连接完成
@@ -204,7 +204,7 @@ public class HiCarMainActivity extends AppCompatActivity implements IMainView {
     @Override
     public void onPinCodeChange() {
         Log.i(TAG, "onPinCodeChange()");
-        switchFragment(Contants.FragmentCon.TAG_AP_CONNECT);
+        switchFragment(Constants.FragmentCon.TAG_AP_CONNECT);
     }
 
     @Override
@@ -222,7 +222,7 @@ public class HiCarMainActivity extends AppCompatActivity implements IMainView {
     @Override
     public void onPinCodeFailed() {
         Log.i(TAG, "onPinCodeFailed()");
-        switchFragment(Contants.FragmentCon.TAG_HICAR_INIT_FAILED);
+        switchFragment(Constants.FragmentCon.TAG_HICAR_INIT_FAILED);
     }
 
     @Override
@@ -321,7 +321,7 @@ public class HiCarMainActivity extends AppCompatActivity implements IMainView {
             return;
         }
         //hiCar是否连接
-        boolean isHicarConnected = sharedPreferencesUtil.getBoolean(com.incall.apps.hicar.servicesdk.contants.Contants.SP_IS_HICAR_CONNECT);
+        boolean isHicarConnected = sharedPreferencesUtil.getBoolean(Constants.SP_IS_HICAR_CONNECT);
         Log.d(TAG, "launchPhoneLink() isHicarConnected: " + isHicarConnected);
         //如果hiCar已经连接
         if (isHicarConnected) {
@@ -330,12 +330,12 @@ public class HiCarMainActivity extends AppCompatActivity implements IMainView {
             return;
         }
         //carLink是否连接
-        boolean isCarLinkConnected = sharedPreferencesUtil.getBoolean(com.incall.apps.hicar.servicesdk.contants.Contants.SP_IS_CARLINK_CONNECT);
+        boolean isCarLinkConnected = sharedPreferencesUtil.getBoolean(Constants.SP_IS_CARLINK_CONNECT);
         Log.d(TAG, "launchPhoneLink() isCarLinkConnected: " + isCarLinkConnected);
         //如果carLink已经连接
         if (isCarLinkConnected) {
             //得到手机商标
-            String phoneBrand = sharedPreferencesUtil.getString(com.incall.apps.hicar.servicesdk.contants.Contants.SP_PHONE_BRAND).toUpperCase();
+            String phoneBrand = sharedPreferencesUtil.getString(Constants.SP_PHONE_BRAND).toUpperCase();
             Log.d(TAG, "launchPhoneLink() phoneBrand: " + phoneBrand);
             //判断手机商标
             switch (phoneBrand) {
@@ -370,21 +370,21 @@ public class HiCarMainActivity extends AppCompatActivity implements IMainView {
             Log.d(TAG, "onResume()  new ioCapability: " + (com.incall.apps.hicar.servicesdk.utils.CommonUtil.getIoCapability()));
         }
 
-        Contants.IS_FRONT = true;
+        Constants.IS_HICAR_FRONT = true;
         if (!mainPresenter.isConnectedDevice()) {
             Log.d(TAG, "onResume() isBtConnected: " + mainPresenter.isBtConnected());
             if (mainPresenter.isBtConnected()) {
                 mainPresenter.startHicarAdv();
             } else {
-                switchFragment(Contants.FragmentCon.TAG_BT_TIPS);
+                switchFragment(Constants.FragmentCon.TAG_BT_TIPS);
             }
         } else {
-            Log.i(TAG, " onResume() hiCar IS_BACKGROUND: " + Contants.IS_BACKGROUND);
+            Log.i(TAG, " onResume() hiCar IS_BACKGROUND: " + Constants.IS_HICAR_BACKGROUND_CONNECT);
             Log.i(TAG, " onResume() hiCar isActivityRunning: " + (CommonUtil.isActivityRunning(MyApplication.getContext(), "com.wt.phoneLink")));
             //后台连接后，被拉起
-            if (Contants.IS_BACKGROUND) {
-                Contants.IS_BACKGROUND = false;
-                switchFragment(Contants.FragmentCon.TAG_HICAR_SCREEN);
+            if (Constants.IS_HICAR_BACKGROUND_CONNECT) {
+                Constants.IS_HICAR_BACKGROUND_CONNECT = false;
+                switchFragment(Constants.FragmentCon.TAG_HICAR_SCREEN);
             }
         }
         Log.e(TAG, "onResume(), threadId: " + Thread.currentThread().getId());
@@ -399,9 +399,9 @@ public class HiCarMainActivity extends AppCompatActivity implements IMainView {
     }
 
     private void startHiCarDataCollect() {
-        mainPresenter.startHiCarDataCollect(com.incall.apps.hicar.servicesdk.contants.Contants.HICAR_START_MODE);
-        if (com.incall.apps.hicar.servicesdk.contants.Contants.HICAR_START_MODE != 2) {
-            com.incall.apps.hicar.servicesdk.contants.Contants.HICAR_START_MODE = 2;
+        mainPresenter.startHiCarDataCollect(Constants.HICAR_START_MODE);
+        if (Constants.HICAR_START_MODE != 2) {
+            Constants.HICAR_START_MODE = 2;
         }
     }
 
@@ -416,13 +416,13 @@ public class HiCarMainActivity extends AppCompatActivity implements IMainView {
             com.incall.apps.hicar.servicesdk.utils.CommonUtil.setIoCapability(capability);
             Log.d(TAG, "onPause() get capability: " + (com.incall.apps.hicar.servicesdk.utils.CommonUtil.getIoCapability()));
         }
-        Contants.IS_FRONT = false;
+        Constants.IS_HICAR_FRONT = false;
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Contants.IS_FRONT = false;
+        Constants.IS_HICAR_FRONT = false;
         Log.i(TAG, "onStop()");
         //没有连接成功，就直接关闭
         if (!HiCarServiceManager.getInstance().isConnectedDevice()) {
@@ -508,20 +508,20 @@ public class HiCarMainActivity extends AppCompatActivity implements IMainView {
         Fragment fragment = null;
         switch (tag) {
             //这个TAG表示HiCar投影的fragment
-            case Contants.FragmentCon.TAG_HICAR_SCREEN:
+            case Constants.FragmentCon.TAG_HICAR_SCREEN:
                 fragment = hiCarFragment;
                 break;
-            case Contants.FragmentCon.TAG_AP_CONNECT:
+            case Constants.FragmentCon.TAG_AP_CONNECT:
                 fragment = apConnectFragment;
                 break;
-            case Contants.FragmentCon.TAG_HICAR_FAILED:
+            case Constants.FragmentCon.TAG_HICAR_FAILED:
                 fragment = connectFailedFragment;
                 break;
             //蓝牙fragment
-            case Contants.FragmentCon.TAG_BT_TIPS:
+            case Constants.FragmentCon.TAG_BT_TIPS:
                 fragment = btFragment;
                 break;
-            case Contants.FragmentCon.TAG_HICAR_INIT_FAILED:
+            case Constants.FragmentCon.TAG_HICAR_INIT_FAILED:
                 //初始化失败fragment
                 fragment = initFailedFragment;
                 break;

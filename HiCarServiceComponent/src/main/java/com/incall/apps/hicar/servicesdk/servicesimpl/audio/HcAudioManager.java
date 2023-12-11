@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioAttributes;
-import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -18,12 +17,11 @@ import com.huawei.hicarsdk.CarAudioListener;
 import com.incall.apps.hicar.servicesdk.ServiceManager;
 import com.incall.apps.hicar.servicesdk.contants.AudioConstants;
 import com.incall.apps.hicar.servicesdk.contants.CallState;
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.incall.apps.hicar.servicesdk.contants.HiCarCallStatusChangeEvent;
 import com.incall.apps.hicar.servicesdk.contants.HicarCallStatusFocusEvent;
 import com.incall.apps.hicar.servicesdk.contants.PlayStatusEvent;
 import com.incall.apps.hicar.servicesdk.interfaces.BaseHiCarListener;
-import com.incall.apps.hicar.servicesdk.interfaces.HiCarServiceListener;
 import com.incall.apps.hicar.servicesdk.manager.HiCarDataCollectManager;
 import com.incall.apps.hicar.servicesdk.manager.HiCarServiceManager;
 import com.incall.apps.hicar.servicesdk.servicesimpl.CommonKeyService;
@@ -255,7 +253,7 @@ public class HcAudioManager extends BaseHiCarListener implements IKeyListener {
                         " }\n";
 
         HiCarServiceManager.getInstance().sendCarData(
-                Contants.HiCarCons.DATA_TYPE_NAV_FOCUS, nativeMap.getBytes());
+                Constants.HiCarCons.DATA_TYPE_NAV_FOCUS, nativeMap.getBytes());
         Log.i(TAG, "exitPhoneMapApp() sendCarData success. nativeMap: " + nativeMap);
     }
 
@@ -374,7 +372,7 @@ public class HcAudioManager extends BaseHiCarListener implements IKeyListener {
                 }
 
                 Log.i(TAG, "mediaButtonClick send data to sdk. will wake voice...");
-                Contants.HICAR_START_MODE = 1;
+                Constants.HICAR_START_MODE = 1;
                 CommonUtil.startHiCarActivity(mContext);
                 if (HiCarServiceManager.getInstance().isConnectedDevice()) {
                     wakeHiCarVoice();
@@ -385,7 +383,7 @@ public class HcAudioManager extends BaseHiCarListener implements IKeyListener {
             //Home 事件
             case MyKeyCode.KEY_HOME:
                 Log.i(TAG, "KEY_HOME= 3");
-                ServiceManager.getInstance().postEvent(Contants.Event.ON_HOME, null);
+                ServiceManager.getInstance().postEvent(Constants.Event.ON_HOME, null);
                 break;
             default:
                 break;
@@ -502,7 +500,7 @@ public class HcAudioManager extends BaseHiCarListener implements IKeyListener {
                 "}";
 
         HiCarServiceManager.getInstance().sendHotWordData(hotWordStr);
-        ServiceManager.getInstance().postEvent(Contants.Event.DEVICE_SERVICE_PAUSE, null);
+        ServiceManager.getInstance().postEvent(Constants.Event.DEVICE_SERVICE_PAUSE, null);
     }
 
     private void initCommonKeyService() {
@@ -537,7 +535,7 @@ public class HcAudioManager extends BaseHiCarListener implements IKeyListener {
         Log.d(TAG, "onDataReceive() s: " + s + ", type: " + type + ", byte[]: " + Arrays.toString(bytes));
         switch (type) {
             //导航焦点通知
-            case Contants.HiCarCons.DATA_TYPE_NAV_FOCUS:
+            case Constants.HiCarCons.DATA_TYPE_NAV_FOCUS:
                 if (bytes == null) {
                     return;
                 }
@@ -551,14 +549,14 @@ public class HcAudioManager extends BaseHiCarListener implements IKeyListener {
                     stopNavi();
                 }
                 break;
-            case Contants.HiCarCons.DATA_TYPE_VOICE_STATE:
+            case Constants.HiCarCons.DATA_TYPE_VOICE_STATE:
                 if (bytes == null) {
                     return;
                 }
                 String voiceStr = new String(bytes);
                 Log.d(TAG, "onDataReceive() DATA_TYPE_VOICE_STATE . voiceStr: " + voiceStr);
                 if (voiceStr.contains("1")) {
-                    Contants.HICAR_START_MODE = 3;
+                    Constants.HICAR_START_MODE = 3;
                     HiCarDataCollectManager.getInstance().startVoice();
                     CommonUtil.sendHiCarBroadcast(mContext, false);
                     //语音唤醒，切换降噪库模式为 VR 模式 KongJing 2021.7.29
@@ -566,7 +564,7 @@ public class HcAudioManager extends BaseHiCarListener implements IKeyListener {
                 }
 
                 break;
-            case Contants.HiCarCons.DATA_TYPE_CALL_STATE_FOCUS:
+            case Constants.HiCarCons.DATA_TYPE_CALL_STATE_FOCUS:
                 //电话状态和焦点
                 String call = new String(bytes);
                 Log.d(TAG, "onDataReceive() s: " + s + " type: DATA_TYPE_CALL_STATE_FOCUS" + ", data: " + call);
@@ -926,8 +924,8 @@ public class HcAudioManager extends BaseHiCarListener implements IKeyListener {
                 //6是开始，7是结束
                 if (type == 6) {
                     SharedPreferencesUtil sp = SharedPreferencesUtil.getInstance(context);
-                    boolean isHiCarConnect = sp.getBoolean(Contants.SP_IS_HICAR_CONNECT);
-                    boolean isCarLinkConnect = sp.getBoolean(Contants.SP_IS_CARLINK_CONNECT);
+                    boolean isHiCarConnect = sp.getBoolean(Constants.SP_IS_HICAR_CONNECT);
+                    boolean isCarLinkConnect = sp.getBoolean(Constants.SP_IS_CARLINK_CONNECT);
                     if (isCarLinkConnect) {
                         UCarAdapter.getInstance().sendKeyEvent(UCarCommon.KeyEventActionType.KEY_EVENT_ACTION_DOWN,
                                 UCarCommon.KeyCodeType.KEY_CODE_NAVI_QUIT, 0);

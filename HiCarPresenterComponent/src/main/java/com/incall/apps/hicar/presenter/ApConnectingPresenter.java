@@ -1,7 +1,7 @@
 package com.incall.apps.hicar.presenter;
 
 import com.incall.apps.hicar.iview.IAPConnetcingView;
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.incall.apps.hicar.servicesdk.ServiceManager;
 
 import java.util.HashMap;
@@ -24,7 +24,7 @@ public class ApConnectingPresenter extends BasePresenter<IAPConnetcingView> {
 
     public String getPhoneName() {
         HashMap<String, Object> params = new HashMap<>();
-        return ServiceManager.getInstance().callServiceSync(Contants.Services.MAIN_SERVICE, Contants.Method.GET_PHONE_NAME, params).toString();
+        return ServiceManager.getInstance().callServiceSync(Constants.Services.MAIN_SERVICE, Constants.Method.GET_PHONE_NAME, params).toString();
     }
 
 }

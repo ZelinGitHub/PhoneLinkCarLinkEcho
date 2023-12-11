@@ -1,9 +1,11 @@
 package com.wt.phonelink;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.wt.phonelink.Contants.ACTION_WT_LINK_CONTROL;
-import static com.wt.phonelink.Contants.PERMISSION_WT_LINK_CONTROL;
-import static com.wt.phonelink.Contants.STATE_WINDOW_MINIMIZE;
+
+
+import static com.incall.apps.hicar.servicesdk.contants.Constants.ACTION_WT_LINK_CONTROL;
+import static com.incall.apps.hicar.servicesdk.contants.Constants.PERMISSION_WT_LINK_CONTROL;
+import static com.incall.apps.hicar.servicesdk.contants.Constants.STATE_WINDOW_MINIMIZE;
 
 import android.app.Application;
 import android.content.ComponentName;
@@ -16,7 +18,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.incall.apps.hicar.servicesdk.contants.CallState;
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.incall.apps.hicar.servicesdk.contants.HiCarCallStatusChangeEvent;
 import com.incall.apps.hicar.servicesdk.contants.HicarSelfVoiceChangeEvent;
 import com.incall.apps.hicar.servicesdk.contants.LaunchPhoneLinkEvent;
@@ -187,7 +189,7 @@ public class VoiceManager extends CommandAbilityExecutor {
             return;
         }
 
-        boolean isHicarConnected = sp.getBoolean(com.incall.apps.hicar.servicesdk.contants.Contants.SP_IS_HICAR_CONNECT);
+        boolean isHicarConnected = sp.getBoolean(Constants.SP_IS_HICAR_CONNECT);
         Log.i(TAG, "registerHiCarWakeUp() isHicarConnected: " + isHicarConnected);
         if (isHicarConnected) {
             WakeUpScene mainScene = new WakeUpScene();
@@ -211,7 +213,7 @@ public class VoiceManager extends CommandAbilityExecutor {
         if (!isForeground) {
             return;
         }
-        boolean isCarLinkConnected = sp.getBoolean(com.incall.apps.hicar.servicesdk.contants.Contants.SP_IS_CARLINK_CONNECT);
+        boolean isCarLinkConnected = sp.getBoolean(Constants.SP_IS_CARLINK_CONNECT);
         Log.i(TAG, "registerCarLinkWakeUp() isCarLinkConnected: " + isCarLinkConnected);
         if (isCarLinkConnected) {
             WakeUpScene mainScene = new WakeUpScene();
@@ -281,11 +283,11 @@ public class VoiceManager extends CommandAbilityExecutor {
         Log.i(TAG, "wakeUpHuawei() param: " + param + ", textList: " + textList);
         //得到sp保存的hiCar和carLink是否连接的状态
         //sp保存的wtBox是否连接的状态
-        boolean isWTBoxConnect = sp.getBoolean(Contants.SP_IS_WTBOX_CONNECT);
+        boolean isWTBoxConnect = sp.getBoolean(Constants.SP_IS_WTBOX_CONNECT);
         //sp保存的hiCar是否连接的状态
-        boolean isHiCarConnect = sp.getBoolean(com.incall.apps.hicar.servicesdk.contants.Contants.SP_IS_HICAR_CONNECT);
+        boolean isHiCarConnect = sp.getBoolean(Constants.SP_IS_HICAR_CONNECT);
         //sp保存的carLink是否连接的状态
-        boolean isCarLinkConnect = sp.getBoolean(Contants.SP_IS_CARLINK_CONNECT);
+        boolean isCarLinkConnect = sp.getBoolean(Constants.SP_IS_CARLINK_CONNECT);
         //carLink已连接
         if (isCarLinkConnect) {
             Log.e(TAG, "wakeUpHuawei() current CarLink isConnected ");
@@ -306,7 +308,7 @@ public class VoiceManager extends CommandAbilityExecutor {
         boolean recordStatus = mSpeechClient.applyRecordStatus();
         Log.i(TAG, "wakeUpHuawei()  recordStatus: " + recordStatus);
         //如果hiCar没有在前台
-        if (!com.wt.phonelink.Contants.IS_FRONT) {
+        if (!Constants.IS_HICAR_FRONT) {
             startHicarMainActivity();
         }
         //6s后唤醒讯飞语音。
@@ -322,11 +324,11 @@ public class VoiceManager extends CommandAbilityExecutor {
         Log.i(TAG, "launchOam() keyword: " + keyword);
         //得到wtBox、hiCar、carLink的连接状态
         //sp保存的wtBox是否连接的状态
-        boolean isWTBoxConnect = sp.getBoolean(Contants.SP_IS_WTBOX_CONNECT);
+        boolean isWTBoxConnect = sp.getBoolean(Constants.SP_IS_WTBOX_CONNECT);
         //sp保存的hiCar是否连接的状态
-        boolean isHiCarConnect = sp.getBoolean(com.incall.apps.hicar.servicesdk.contants.Contants.SP_IS_HICAR_CONNECT);
+        boolean isHiCarConnect = sp.getBoolean(Constants.SP_IS_HICAR_CONNECT);
         //sp保存的carLink是否连接的状态
-        boolean isCarLinkConnect = sp.getBoolean(Contants.SP_IS_CARLINK_CONNECT);
+        boolean isCarLinkConnect = sp.getBoolean(Constants.SP_IS_CARLINK_CONNECT);
         //如果梧桐box已连接
         if (isWTBoxConnect) {
             Log.e(TAG, "launchOam() current wtBox isConnected ");
@@ -349,7 +351,7 @@ public class VoiceManager extends CommandAbilityExecutor {
         //6s后唤醒讯飞语音
         releaseRecordStatusDelay();
         //如果carLink不在前台，就打开carLink主Activity
-        if (!com.wt.phonelink.Contants.IS_CARLINK_FRONT) {
+        if (!Constants.IS_CARLINK_FRONT) {
             startCarlinkMainActivity();
         }
         //唤醒carLink手机语音助手，这个是手机语音助手，不是梧桐自己的系统语音
@@ -362,16 +364,16 @@ public class VoiceManager extends CommandAbilityExecutor {
         Log.i(TAG, "wakeUpOpen() param: " + param + ", textList: " + textList);
         //更新hiCar、carLink、wtBox是否连接的状态
         //sp保存的wtBox是否连接的状态
-        boolean isWTBoxConnect = sp.getBoolean(Contants.SP_IS_WTBOX_CONNECT);
+        boolean isWTBoxConnect = sp.getBoolean(Constants.SP_IS_WTBOX_CONNECT);
         //sp保存的hiCar是否连接的状态
-        boolean isHiCarConnect = sp.getBoolean(com.incall.apps.hicar.servicesdk.contants.Contants.SP_IS_HICAR_CONNECT);
+        boolean isHiCarConnect = sp.getBoolean(Constants.SP_IS_HICAR_CONNECT);
         //sp保存的carLink是否连接的状态
-        boolean isCarLinkConnect = sp.getBoolean(Contants.SP_IS_CARLINK_CONNECT);
+        boolean isCarLinkConnect = sp.getBoolean(Constants.SP_IS_CARLINK_CONNECT);
         //打开手机互联
         //小桐畅联正在连接
         if (isWTBoxConnect) {
-            Log.i(TAG, "wakeUpOpen() IS_WTBOX_FRONT: " + com.wt.phonelink.Contants.IS_WTBOX_FRONT);
-            if (!com.wt.phonelink.Contants.IS_WTBOX_FRONT) {
+            Log.i(TAG, "wakeUpOpen() IS_WTBOX_FRONT: " + Constants.IS_WTBOX_FRONT);
+            if (!Constants.IS_WTBOX_FRONT) {
                 playTts("好的，没问题");
             } else {
                 playTts("手机互联已经打开了");
@@ -393,9 +395,9 @@ public class VoiceManager extends CommandAbilityExecutor {
         }
         //hiCar正在连接
         else if (isHiCarConnect) {
-            Log.i(TAG, "wakeUpOpen() hiCar IS_FRONT: " + com.wt.phonelink.Contants.IS_FRONT);
+            Log.i(TAG, "wakeUpOpen() hiCar IS_FRONT: " + Constants.IS_HICAR_FRONT);
             //如果hiCar没有在前台
-            if (!com.wt.phonelink.Contants.IS_FRONT) {
+            if (!Constants.IS_HICAR_FRONT) {
                 playTts("好的，没问题");
                 //启动hiCar主activity
                 startHicarMainActivity();
@@ -407,9 +409,9 @@ public class VoiceManager extends CommandAbilityExecutor {
         }
         //carLink正在连接
         else if (isCarLinkConnect) {
-            Log.i(TAG, "wakeUpOpen() IS_CARLINK_FRONT: " + com.wt.phonelink.Contants.IS_CARLINK_FRONT);
+            Log.i(TAG, "wakeUpOpen() IS_CARLINK_FRONT: " + Constants.IS_CARLINK_FRONT);
             //如果carLink没有在前台
-            if (!com.wt.phonelink.Contants.IS_CARLINK_FRONT) {
+            if (!Constants.IS_CARLINK_FRONT) {
                 playTts("好的，没问题");
                 startCarlinkMainActivity();
             } else {
@@ -420,8 +422,8 @@ public class VoiceManager extends CommandAbilityExecutor {
         }
         //wt盒子、hiCar、carLink都没有连接
         else {
-            Log.i(TAG, "wakeUpOpen() IS_PHONE_LINK_FRONT: " + com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT);
-            if (!com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT) {
+            Log.i(TAG, "wakeUpOpen() IS_PHONE_LINK_FRONT: " + Constants.IS_PHONE_LINK_FRONT);
+            if (!Constants.IS_PHONE_LINK_FRONT) {
                 playTts("好的，没问题");
             } else {
                 playTts("手机互联已经打开了");
@@ -438,20 +440,20 @@ public class VoiceManager extends CommandAbilityExecutor {
     public void wakeUpClose(JSONObject param, List<TextList> textList) {
         Log.i(TAG, "wakeUpClose()  param: " + param + ", textList: " + textList);
         //sp保存的wtBox是否连接的状态
-        boolean isWTBoxConnect = sp.getBoolean(Contants.SP_IS_WTBOX_CONNECT);
+        boolean isWTBoxConnect = sp.getBoolean(Constants.SP_IS_WTBOX_CONNECT);
         //回到桌面就行
         Log.i(TAG, "wakeUpClose()  call toLauncher()");
         startAppListActivity();
         Log.i(TAG, "wakeUpClose()  " +
-                "IS_CARLINK_FRONT: " + com.wt.phonelink.Contants.IS_CARLINK_FRONT
-                + ", IS_HICAR_FRONT: " + com.wt.phonelink.Contants.IS_FRONT
-                + ", IS_WTBOX_FRONT: " + com.wt.phonelink.Contants.IS_WTBOX_FRONT
-                + ", IS_PHONE_LINK_FRONT: " + com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT
+                "IS_CARLINK_FRONT: " + Constants.IS_CARLINK_FRONT
+                + ", IS_HICAR_FRONT: " + Constants.IS_HICAR_FRONT
+                + ", IS_WTBOX_FRONT: " + Constants.IS_WTBOX_FRONT
+                + ", IS_PHONE_LINK_FRONT: " + Constants.IS_PHONE_LINK_FRONT
         );
-        if (!com.wt.phonelink.Contants.IS_CARLINK_FRONT
-                && !com.wt.phonelink.Contants.IS_FRONT
-                && !com.wt.phonelink.Contants.IS_WTBOX_FRONT
-                && !com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT
+        if (!Constants.IS_CARLINK_FRONT
+                && !Constants.IS_HICAR_FRONT
+                && !Constants.IS_WTBOX_FRONT
+                && !Constants.IS_PHONE_LINK_FRONT
         ) {
             playTts("手机互联已经关闭了");
         }
@@ -587,17 +589,17 @@ public class VoiceManager extends CommandAbilityExecutor {
             return;
         }
         //如果hicar已经连接，唤醒hicar手机语音助手，停止梧桐讯飞语音助手
-        boolean isHicarConnected = sp.getBoolean(com.incall.apps.hicar.servicesdk.contants.Contants.SP_IS_HICAR_CONNECT);
+        boolean isHicarConnected = sp.getBoolean(Constants.SP_IS_HICAR_CONNECT);
         Log.i(TAG, "onLaunchPhoneLinkEvent() isHicarConnected: " + isHicarConnected);
         if (isHicarConnected) {
             VoiceManager.getInstance().wakeUpHuawei(null, null);
             return;
         }
         //如果carlink已经连接，唤醒carlink手机语音助手，停止梧桐讯飞语音助手
-        boolean isCarLinkConnected = sp.getBoolean(com.incall.apps.hicar.servicesdk.contants.Contants.SP_IS_CARLINK_CONNECT);
+        boolean isCarLinkConnected = sp.getBoolean(Constants.SP_IS_CARLINK_CONNECT);
         Log.i(TAG, "onLaunchPhoneLinkEvent() isCarLinkConnected: " + isCarLinkConnected);
         if (isCarLinkConnected) {
-            String phoneBrand = sp.getString(com.incall.apps.hicar.servicesdk.contants.Contants.SP_PHONE_BRAND).toUpperCase();
+            String phoneBrand = sp.getString(Constants.SP_PHONE_BRAND).toUpperCase();
             Log.i(TAG, "onLaunchPhoneLinkEvent() phoneBrand: " + phoneBrand);
             switch (phoneBrand) {
                 case "OPPO":

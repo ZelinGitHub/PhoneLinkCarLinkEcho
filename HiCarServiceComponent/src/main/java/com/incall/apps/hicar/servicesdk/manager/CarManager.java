@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.incall.apps.hicar.servicemanager.LogUtil;
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.incall.apps.hicar.servicesdk.utils.CommonUtil;
 import com.openos.virtualcar.VirtualCar;
 import com.openos.virtualcar.VirtualCarPropertyCallBack;
@@ -113,11 +113,11 @@ public class CarManager {
         if (gear == VirtualCarSensorFunction.CurrentGear.GEAR_PARK) {
             //停车模式
             resultCode = HiCarServiceManager.getInstance().sendCarData(
-                    Contants.HiCarCons.DATA_TYPE_DRIVING_MODE, CommonUtil.getDrivingMode(1));
+                    Constants.HiCarCons.DATA_TYPE_DRIVING_MODE, CommonUtil.getDrivingMode(1));
         } else {
             //行车模式
             resultCode = HiCarServiceManager.getInstance().sendCarData(
-                    Contants.HiCarCons.DATA_TYPE_DRIVING_MODE, CommonUtil.getDrivingMode(0));
+                    Constants.HiCarCons.DATA_TYPE_DRIVING_MODE, CommonUtil.getDrivingMode(0));
         }
 
         //发送挡位数据给carlink

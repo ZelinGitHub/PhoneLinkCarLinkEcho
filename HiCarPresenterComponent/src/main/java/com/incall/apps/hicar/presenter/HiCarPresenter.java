@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.Surface;
 
 import com.incall.apps.hicar.iview.IHiCarView;
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.incall.apps.hicar.servicemanager.event.ICAEventListener;
 
 import java.lang.ref.WeakReference;
@@ -28,15 +28,15 @@ public class HiCarPresenter extends BasePresenter<IHiCarView> {
     private static final int MSG_DEVICE_DISPLAY_SERVICE_PLAYING = 9;
 
     public HiCarPresenter() {
-        serviceManager.addEventListener(Contants.Event.DEVICE_CONNECT, eventListener);
-        serviceManager.addEventListener(Contants.Event.DEVICE_DISCONNECT, eventListener);
-        serviceManager.addEventListener(Contants.Event.DEVICE_PROJECT_CONNECT, eventListener);
-        serviceManager.addEventListener(Contants.Event.DEVICE_PROJECT_DISCONNECT, eventListener);
-        serviceManager.addEventListener(Contants.Event.DEVICE_SERVICE_PAUSE, eventListener);
-        serviceManager.addEventListener(Contants.Event.DEVICE_SERVICE_RESUME, eventListener);
-        serviceManager.addEventListener(Contants.Event.DEVICE_SERVICE_START, eventListener);
-        serviceManager.addEventListener(Contants.Event.DEVICE_SERVICE_STOP, eventListener);
-        serviceManager.addEventListener(Contants.Event.DEVICE_DISPLAY_SERVICE_PLAYING, eventListener);
+        serviceManager.addEventListener(Constants.Event.DEVICE_CONNECT, eventListener);
+        serviceManager.addEventListener(Constants.Event.DEVICE_DISCONNECT, eventListener);
+        serviceManager.addEventListener(Constants.Event.DEVICE_PROJECT_CONNECT, eventListener);
+        serviceManager.addEventListener(Constants.Event.DEVICE_PROJECT_DISCONNECT, eventListener);
+        serviceManager.addEventListener(Constants.Event.DEVICE_SERVICE_PAUSE, eventListener);
+        serviceManager.addEventListener(Constants.Event.DEVICE_SERVICE_RESUME, eventListener);
+        serviceManager.addEventListener(Constants.Event.DEVICE_SERVICE_START, eventListener);
+        serviceManager.addEventListener(Constants.Event.DEVICE_SERVICE_STOP, eventListener);
+        serviceManager.addEventListener(Constants.Event.DEVICE_DISPLAY_SERVICE_PLAYING, eventListener);
         Log.d(TAG, "HiCarPresenter()");
     }
 
@@ -134,39 +134,39 @@ public class HiCarPresenter extends BasePresenter<IHiCarView> {
                 return;
             }
             switch (eventName) {
-                case Contants.Event.DEVICE_CONNECT:
+                case Constants.Event.DEVICE_CONNECT:
                     hiCarHandler.sendEmptyMessage(MSG_DEVICE_CONNECT);
                     break;
-                case Contants.Event.DEVICE_DISCONNECT:
+                case Constants.Event.DEVICE_DISCONNECT:
                     //发送断开连接的消息
                     hiCarHandler.sendEmptyMessage(MSG_DEVICE_DISCONNECT);
                     break;
-                case Contants.Event.DEVICE_PROJECT_CONNECT:
+                case Constants.Event.DEVICE_PROJECT_CONNECT:
                     hiCarHandler.sendEmptyMessage(MSG_DEVICE_PROJECT_CONNECT);
                     break;
                 //设备投影断开连接
-                case Contants.Event.DEVICE_PROJECT_DISCONNECT:
+                case Constants.Event.DEVICE_PROJECT_DISCONNECT:
                     hiCarHandler.sendEmptyMessage(MSG_DEVICE_PROJECT_DISCONNECT);
                     break;
                 //202
-                case Contants.Event.DEVICE_SERVICE_PAUSE:
+                case Constants.Event.DEVICE_SERVICE_PAUSE:
                     hiCarHandler.sendEmptyMessage(MSG_DEVICE_SERVICE_PAUSE);
                     break;
                 //203
-                case Contants.Event.DEVICE_SERVICE_RESUME:
+                case Constants.Event.DEVICE_SERVICE_RESUME:
                     hiCarHandler.sendEmptyMessage(MSG_DEVICE_SERVICE_RESUME);
                     break;
                 //204
                 //HiCarConst.EVENT_DEVICE_SERVICE_START
-                case Contants.Event.DEVICE_SERVICE_START:
+                case Constants.Event.DEVICE_SERVICE_START:
                     Log.d(TAG, "204 onEvent() send MSG_DEVICE_SERVICE_START");
                     Log.d(TAG, "204 onEvent() hiCarHandler: " + hiCarHandler);
                     hiCarHandler.sendEmptyMessage(MSG_DEVICE_SERVICE_START);
                     break;
-                case Contants.Event.DEVICE_SERVICE_STOP:
+                case Constants.Event.DEVICE_SERVICE_STOP:
                     hiCarHandler.sendEmptyMessage(MSG_DEVICE_SERVICE_STOP);
                     break;
-                case Contants.Event.DEVICE_DISPLAY_SERVICE_PLAYING:
+                case Constants.Event.DEVICE_DISPLAY_SERVICE_PLAYING:
                     hiCarHandler.sendEmptyMessage(MSG_DEVICE_DISPLAY_SERVICE_PLAYING);
                     break;
                 default:
@@ -184,12 +184,12 @@ public class HiCarPresenter extends BasePresenter<IHiCarView> {
         params.put("height", height);
         params.put("surface", surface);
         //更新车配置
-        return (Boolean) serviceManager.callServiceSync(Contants.Services.MAIN_SERVICE, Contants.Method.UPDATE_CARCONFIG, params);
+        return (Boolean) serviceManager.callServiceSync(Constants.Services.MAIN_SERVICE, Constants.Method.UPDATE_CARCONFIG, params);
     }
 
     public boolean isPlayAnim() {
         HashMap<String, Object> params = new HashMap<>();
-        return (Boolean) serviceManager.callServiceSync(Contants.Services.MAIN_SERVICE, Contants.Method.IS_PLAY_ANIM, params);
+        return (Boolean) serviceManager.callServiceSync(Constants.Services.MAIN_SERVICE, Constants.Method.IS_PLAY_ANIM, params);
     }
 
     //204
@@ -200,34 +200,34 @@ public class HiCarPresenter extends BasePresenter<IHiCarView> {
         HashMap<String, Object> params = new HashMap<>();
         //调用到MainServiceImpl的对Contants.Method.START_PROJECTION的处理
         //调用HiCarServiceManager的startProjection方法，最后调用mHiCarAdapter的startProjection方法
-        return (Boolean) serviceManager.callServiceSync(Contants.Services.MAIN_SERVICE, Contants.Method.START_PROJECTION, params);
+        return (Boolean) serviceManager.callServiceSync(Constants.Services.MAIN_SERVICE, Constants.Method.START_PROJECTION, params);
     }
 
     //暂停投屏
     public void pauseProjection() {
         HashMap<String, Object> params = new HashMap<>();
-        serviceManager.callServiceSync(Contants.Services.MAIN_SERVICE, Contants.Method.PAUSE_PROJECTION, params);
+        serviceManager.callServiceSync(Constants.Services.MAIN_SERVICE, Constants.Method.PAUSE_PROJECTION, params);
     }
 
     public void stopProjection() {
         HashMap<String, Object> params = new HashMap<>();
-        serviceManager.callServiceSync(Contants.Services.MAIN_SERVICE, Contants.Method.STOP_PROJECTION, params);
+        serviceManager.callServiceSync(Constants.Services.MAIN_SERVICE, Constants.Method.STOP_PROJECTION, params);
     }
 
     //断开设备连接
     public void disConnected() {
         HashMap<String, Object> params = new HashMap<>();
         //将调用到HiCarServiceManager的disconnectDevice方法
-        serviceManager.callServiceSync(Contants.Services.MAIN_SERVICE, Contants.Method.DIS_CONNECTED, params);
+        serviceManager.callServiceSync(Constants.Services.MAIN_SERVICE, Constants.Method.DIS_CONNECTED, params);
     }
 
     public void stopHiCarAdv() {
         HashMap<String, Object> params = new HashMap<>();
-        serviceManager.callServiceSync(Contants.Services.MAIN_SERVICE, Contants.Method.STOP_HICAR_ADV, params);
+        serviceManager.callServiceSync(Constants.Services.MAIN_SERVICE, Constants.Method.STOP_HICAR_ADV, params);
     }
 
     public String getPhoneName() {
         HashMap<String, Object> params = new HashMap<>();
-        return serviceManager.callServiceSync(Contants.Services.MAIN_SERVICE, Contants.Method.GET_PHONE_NAME, params).toString();
+        return serviceManager.callServiceSync(Constants.Services.MAIN_SERVICE, Constants.Method.GET_PHONE_NAME, params).toString();
     }
 }

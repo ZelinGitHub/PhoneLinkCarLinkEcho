@@ -7,7 +7,7 @@ import android.os.Message;
 import com.incall.apps.hicar.servicemanager.LogUtil;
 import com.incall.apps.hicar.iview.IConnectFailedView;
 import com.incall.apps.hicar.servicemanager.event.ICAEventListener;
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 
 import java.util.HashMap;
 //ConnectFailedFragment的presenter
@@ -20,7 +20,7 @@ public class FailedPresenter extends BasePresenter<IConnectFailedView> {
     private final int MSG_HOME = 1;
 
     public FailedPresenter() {
-        serviceManager.addEventListener(Contants.Event.ON_HOME, eventListener);
+        serviceManager.addEventListener(Constants.Event.ON_HOME, eventListener);
         LogUtil.d(TAG, "FailedPresenter=");
     }
 
@@ -43,7 +43,7 @@ public class FailedPresenter extends BasePresenter<IConnectFailedView> {
         public void onEvent(String eventName, Object message) {
             LogUtil.d(TAG, "eventName=" + eventName + "---message=" + message);
             switch (eventName) {
-                case Contants.Event.ON_HOME:
+                case Constants.Event.ON_HOME:
                     connectFailedHandler.sendMessage(connectFailedHandler.obtainMessage(MSG_HOME, message));
                     break;
                 default:break;
@@ -71,11 +71,11 @@ public class FailedPresenter extends BasePresenter<IConnectFailedView> {
 
     public String getPhoneName() {
         HashMap<String, Object> params = new HashMap<>();
-        return serviceManager.callServiceSync(Contants.Services.MAIN_SERVICE, Contants.Method.GET_PHONE_NAME, params).toString();
+        return serviceManager.callServiceSync(Constants.Services.MAIN_SERVICE, Constants.Method.GET_PHONE_NAME, params).toString();
     }
 
     public void disConnected() {
         HashMap<String, Object> params = new HashMap<>();
-        serviceManager.callServiceSync(Contants.Services.MAIN_SERVICE, Contants.Method.DIS_CONNECTED, params);
+        serviceManager.callServiceSync(Constants.Services.MAIN_SERVICE, Constants.Method.DIS_CONNECTED, params);
     }
 }

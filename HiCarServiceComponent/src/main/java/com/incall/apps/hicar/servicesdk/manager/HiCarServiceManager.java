@@ -9,11 +9,9 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Surface;
-import android.widget.Toast;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.huawei.hicarsdk.CarConfig;
@@ -27,16 +25,13 @@ import com.huawei.managementsdk.launcher.AppInfoChangeListener;
 import com.huawei.managementsdk.launcher.AppTransManager;
 import com.incall.apps.hicar.servicesdk.HiCarAppAdapter;
 import com.incall.apps.hicar.servicesdk.ServiceManager;
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.incall.apps.hicar.servicesdk.interfaces.HiCarServiceListener;
 import com.incall.apps.hicar.servicesdk.servicesimpl.audio.HcAudioManager;
 import com.incall.apps.hicar.servicesdk.utils.CommonUtil;
 import com.incall.apps.hicar.servicesdk.utils.SharedPreferencesUtil;
 import com.incall.apps.hicar.servicesdk.utils.SystemProperties;
 import com.tinnove.hicarclient.beans.WTAppInfoBean;
-import com.tinnove.schedulecard.MediaData;
-import com.tinnove.schedulecard.ScenceData;
-import com.ucar.vehiclesdk.UCarAdapter;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -55,7 +50,7 @@ import static android.view.KeyEvent.KEYCODE_MEDIA_PREVIOUS;
 import static android.view.KeyEvent.KEYCODE_MEDIA_REWIND;
 import static android.view.KeyEvent.KEYCODE_MEDIA_STOP;
 import static com.incall.apps.hicar.servicesdk.aidl.HiCarManagerImpl.setGlobalProp;
-import static com.incall.apps.hicar.servicesdk.contants.Contants.HiCarCons.DATA_TYPE_REQUEST_APP;
+import static com.incall.apps.hicar.servicesdk.contants.Constants.IS_CARLINK_FRONT;
 
 //管理类，可以看做工具类。是一个核心类。
 //HiCar服务管理器
@@ -249,17 +244,22 @@ public class HiCarServiceManager {
                     return;
                 }
                 //退出IPO的时候需要重连HiCar 车机重启的时候判断是否是退出IPO启动
-                if (SystemProperties.get(Contants.KEY_PROPERTY_IPO_STATUS).contains(Contants.PROPERTY_IPO_BOOT)) {
+                if (SystemProperties.get(Constants.KEY_PROPERTY_IPO_STATUS).contains(Constants.PROPERTY_IPO_BOOT)) {
                     startReconnectByStopIpo();
                 }
                 /*取消注释，因为kill本身hicar的时候，会发生闪退或者卡logo 2021.7.21 KongJing
                  * 增加一个判断是否app处于前台的方法 LiJia 2021.7.28*/
-                if (CommonUtil.isActivityRunning(context, "com.wt.phonelink")) {
-                    Log.i(TAG, "HiCar reg listener success and MSG_START_ADV");
-                    //发送蓝牙设备扫描消息，开始蓝牙设备扫描 ADV是advertise的简写
-                    sendMsgDelayed(MSG_START_ADV, 0);
+                if (CommonUtil.isActivityRunning(mContext, "com.wt.phonelink")) {
+                    //防止连接CarLink时候，自动连接hicar
+                    if (!IS_CARLINK_FRONT) {
+                        Log.i(TAG, "onInitSuccess() call sendMsgDelayed() param: MSG_START_ADV");
+                        //发送蓝牙设备扫描消息，开始蓝牙设备扫描 ADV是advertise的简写
+                        sendMsgDelayed(MSG_START_ADV, 0);
+                    } else {
+                        Log.e(TAG, "onInitSuccess() CarLinkActivity is running");
+                    }
                 } else {
-                    Log.e(TAG, "HiCar reg listener success but not isActivityRunning !!! MSG_START_ADV");
+                    Log.e(TAG, "onInitSuccess() PhoneLink activities is not running");
                 }
                 Log.i(TAG, "HiCar reg listener success");
             }
@@ -463,7 +463,7 @@ public class HiCarServiceManager {
             return retCode;
         }
         //从sp取值。判断hiCar当前是否连接
-        boolean isHiCarConnect = sp.getBoolean(Contants.SP_IS_HICAR_CONNECT, false);
+        boolean isHiCarConnect = sp.getBoolean(Constants.SP_IS_HICAR_CONNECT, false);
         Log.i(TAG, "disconnectDevice() isHiCarConnect：" + isHiCarConnect);
         //判断当前的连接品牌是hicar还是carlink。当前连接的是hiCar
         if (isHiCarConnect) {
@@ -603,8 +603,8 @@ public class HiCarServiceManager {
             if (name.contains(" ")) {
                 String brand = name.substring(0, name.indexOf(" "));
                 String model = name.substring(name.indexOf(" ") + 1);
-                sp.putString(Contants.SP_PHONE_BRAND, brand);
-                sp.putString(Contants.SP_PHONE_MODEL, model);
+                sp.putString(Constants.SP_PHONE_BRAND, brand);
+                sp.putString(Constants.SP_PHONE_MODEL, model);
             } else {
                 setDefaultValue();
             }
@@ -616,8 +616,8 @@ public class HiCarServiceManager {
     }
 
     private void setDefaultValue() {
-        sp.putString(Contants.SP_PHONE_BRAND, "HUAWEI");
-        sp.putString(Contants.SP_PHONE_MODEL, "");
+        sp.putString(Constants.SP_PHONE_BRAND, "HUAWEI");
+        sp.putString(Constants.SP_PHONE_MODEL, "");
     }
 
     private String mac = "";
@@ -649,8 +649,8 @@ public class HiCarServiceManager {
      */
 
     public boolean isPlayAnim() {
-        return !(eventDeviceService == Contants.HiCarCons.EVENT_DEVICE_SERVICE_PAUSE ||
-                eventDeviceService == Contants.HiCarCons.EVENT_DEVICE_SERVICE_RESUME);
+        return !(eventDeviceService == Constants.HiCarCons.EVENT_DEVICE_SERVICE_PAUSE ||
+                eventDeviceService == Constants.HiCarCons.EVENT_DEVICE_SERVICE_RESUME);
     }
 
     public String getMac() {
@@ -734,7 +734,7 @@ public class HiCarServiceManager {
         // 多加一个判断是否连接了设备的条件，表示在连接过程中休眠唤醒的话，会进行重连，add by CAlqs 2022.5.10
         if (HiCarConst.CONNECTION_TYPE_WIFI == type && (disconnectType != HiCarConst.DISCONNECT_TYPE_MANUAL || !TextUtils.isEmpty(connectedDevice))) {
             Log.i(TAG, "startIpo()->savedMac:" + getMac());
-            sp.putString(Contants.HICAR_MAC, getMac());
+            sp.putString(Constants.HICAR_MAC, getMac());
         }
 //        sp.putString(Contants.HICAR_MAC, "1C:B7:96:B7:DF:17");//保时捷
 //        sp.putString(Contants.HICAR_MAC, "E4:FD:A1:C6:00:1C");//mate 30 pro
@@ -744,7 +744,7 @@ public class HiCarServiceManager {
      * 车机退出IPO模式后HiCar回连
      */
     public void startReconnectByStopIpo() {
-        String mac = sp.getString(Contants.HICAR_MAC, "-1");
+        String mac = sp.getString(Constants.HICAR_MAC, "-1");
         Log.d(TAG, "startReconnectByStopIPO---mac=" + mac);
         if (!"-1".equals(mac)) {
             isIpoReconnect = true;
@@ -781,7 +781,7 @@ public class HiCarServiceManager {
                         break;
                     //蓝牙打开
                     case BluetoothAdapter.STATE_ON:
-                        ServiceManager.getInstance().postEvent(Contants.Event.BT_CONNECTED, null);
+                        ServiceManager.getInstance().postEvent(Constants.Event.BT_CONNECTED, null);
                         break;
                     default:
                         break;
@@ -854,8 +854,8 @@ public class HiCarServiceManager {
 //                ActivityThread: Receiving broadcast android.net.wifi.WIFI_AP_STATE_CHANGED seq=-1 to com.incall.apps.hicar.servicesdk.manager.HiCarServiceManager$3@d5a8a7c
 //                HiCarServiceManager: onReceive() android.net.wifi.WIFI_AP_STATE_CHANGED, com.huawei.hicarsdk.HiCarAdapter@ba4593c
 //                HiCarServiceManager: onReceive() state: 11, isIpo: true, isIPOBoot=
-                Log.d(TAG, "onReceive() state: " + state + ", isIpo: " + isIpo + ", isIPOBoot: " + SystemProperties.get(Contants.KEY_PROPERTY_IPO_STATUS));
-                if (isIpo && state == 13 && SystemProperties.get(Contants.KEY_PROPERTY_IPO_STATUS).contains(Contants.PROPERTY_IPO_BOOT)) {
+                Log.d(TAG, "onReceive() state: " + state + ", isIpo: " + isIpo + ", isIPOBoot: " + SystemProperties.get(Constants.KEY_PROPERTY_IPO_STATUS));
+                if (isIpo && state == 13 && SystemProperties.get(Constants.KEY_PROPERTY_IPO_STATUS).contains(Constants.PROPERTY_IPO_BOOT)) {
                     isIpo = false;
                     startReconnectByStopIpo();
                 }
@@ -917,7 +917,7 @@ public class HiCarServiceManager {
     private void deviceConnected(Context context) {
         Log.i(TAG, "deviceConnected()  EVENT_DEVICE_CONNECT: " + getConnectionType());
         CommonUtil.sendHiCarBroadcast(context, true);
-        sp.putString(Contants.HICAR_MAC, "-1");
+        sp.putString(Constants.HICAR_MAC, "-1");
 
         //hicar 连接成功后关闭蓝牙 蓝牙只是用来配对，真实连接是WiFi或者是USB
         BTManager.getInstance().bluetoothOff();
@@ -979,9 +979,9 @@ public class HiCarServiceManager {
                     postMetaDataRequest();
                     Log.i(TAG, "onDeviceChange() postAppsRequest");
                     postAppsRequest();
-                    sp.putBoolean(Contants.SP_IS_HICAR_CONNECT, true);
+                    sp.putBoolean(Constants.SP_IS_HICAR_CONNECT, true);
                     if (mContext != null) {
-                        setGlobalProp(mContext, Contants.SYS_IS_HICAR_CONNECT, 1);
+                        setGlobalProp(mContext, Constants.SYS_IS_HICAR_CONNECT, 1);
                     }
                     break;
                 //状态是断开连接
@@ -1008,15 +1008,15 @@ public class HiCarServiceManager {
                     }
                     //断连接的时候，释放hicar拨打电话的焦点
                     SystemProperties.set("system.ca.hicar.tel.state", "0");
-                    sp.putBoolean(Contants.SP_IS_HICAR_CONNECT, false);
+                    sp.putBoolean(Constants.SP_IS_HICAR_CONNECT, false);
                     if (mContext != null) {
-                        setGlobalProp(mContext, Contants.SYS_IS_HICAR_CONNECT, 0);
+                        setGlobalProp(mContext, Constants.SYS_IS_HICAR_CONNECT, 0);
                     }
                     //打开wifi
                     //CommonUtil.setWifiEnabled(context, true);
                     break;
                 //状态是停止设备扫描
-                case Contants.HiCarCons.EVENT_DEVICE_ADV_STOP:
+                case Constants.HiCarCons.EVENT_DEVICE_ADV_STOP:
                     sendMsgDelayed(MSG_STOP_ADV, 0);
                     break;
             }
@@ -1040,9 +1040,9 @@ public class HiCarServiceManager {
             Log.d(TAG, "onDeviceServiceChange() i: " + i);
             eventDeviceService = i;
             Log.d(TAG, "onDeviceServiceChange() isConnectedDevice3: connectedDevice: " + connectedDevice);
-            if (i == Contants.HiCarCons.EVENT_DEVICE_SERVICE_VIRMODEM_CALLING) {
+            if (i == Constants.HiCarCons.EVENT_DEVICE_SERVICE_VIRMODEM_CALLING) {
                 SystemProperties.set("system.ca.hicar.tel.state", "1");
-            } else if (i == Contants.HiCarCons.EVENT_DEVICE_SERVICE_VIRMODEM_HANG_UP) {
+            } else if (i == Constants.HiCarCons.EVENT_DEVICE_SERVICE_VIRMODEM_HANG_UP) {
                 SystemProperties.set("system.ca.hicar.tel.state", "0");
             }
             Log.d(TAG, "onDeviceServiceChange() " + SystemProperties.get("system.ca.hicar.tel.state"));

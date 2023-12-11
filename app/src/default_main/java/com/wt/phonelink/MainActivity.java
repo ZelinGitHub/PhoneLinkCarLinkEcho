@@ -1,6 +1,6 @@
 package com.wt.phonelink;
 
-import static com.wt.phonelink.Contants.IS_WTBOX_FRONT;
+import static Contants.IS_WTBOX_FRONT;
 
 import android.car.Car;
 import android.car.hardware.power.CarPowerManager;
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resumeTime = System.currentTimeMillis();
         Log.d(TAG, "onResume() resumeTime: " + resumeTime);
         initLayoutActivity();
-        com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT = true;
+        Contants.IS_PHONE_LINK_FRONT = true;
 
         boolean isWTBoxConnect = sp.getBoolean(Contants.SP_IS_WTBOX_CONNECT);
         Log.e(TAG, "onResume() isWTBoxConnect: " + isWTBoxConnect);
@@ -220,14 +220,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause()");
-        com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT = false;
+        Contants.IS_PHONE_LINK_FRONT = false;
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop()");
-        com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT = false;
+        Contants.IS_PHONE_LINK_FRONT = false;
     }
 
     @Override
@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
         CommonUtil.setGlobalProp(Contants.SYS_IS_CARLINK_CONNECT, 0);
-        com.wt.phonelink.Contants.IS_PHONE_LINK_FRONT = false;
+        Contants.IS_PHONE_LINK_FRONT = false;
         VoiceUtils.getInstance().stopOrResumeVr(true);
         carPowerManager.clearListener();
         WTSkinManager.get().removeSkinChangedListener(skinChangedListener);//防止内存泄漏

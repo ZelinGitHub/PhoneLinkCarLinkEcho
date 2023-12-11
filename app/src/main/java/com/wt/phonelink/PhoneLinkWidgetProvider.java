@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.incall.apps.hicar.servicemanager.LogUtil;
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.incall.apps.hicar.servicesdk.utils.SharedPreferencesUtil;
 import com.wt.phonelink.carlink.CarLinkMainActivity;
 import com.wt.phonelink.hicar.HiCarMainActivity;
@@ -41,11 +41,11 @@ public class PhoneLinkWidgetProvider extends AppWidgetProvider {
         String action = intent.getAction();
         LogUtil.d(TAG, "onReceive action = " + action);
         if (ACTION.equals(action)) {
-            if (sp.getBoolean(Contants.SP_IS_CARLINK_CONNECT, false)) {
+            if (sp.getBoolean(Constants.SP_IS_CARLINK_CONNECT, false)) {
                 Intent intent1 = new Intent(mContext, CarLinkMainActivity.class);
                 intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent1);
-            } else if (sp.getBoolean(Contants.SP_IS_HICAR_CONNECT, false)) {
+            } else if (sp.getBoolean(Constants.SP_IS_HICAR_CONNECT, false)) {
                 Intent intent2 = new Intent(mContext, HiCarMainActivity.class);
                 intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent2);
@@ -63,14 +63,14 @@ public class PhoneLinkWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-        LogUtil.d(TAG, "onUpdate SP_IS_CARLINK_CONNECT----" + (sp.getBoolean(Contants.SP_IS_CARLINK_CONNECT)));
-        LogUtil.d(TAG, "onUpdate SP_IS_HICAR_CONNECT----" + sp.getBoolean(Contants.SP_IS_HICAR_CONNECT));
+        LogUtil.d(TAG, "onUpdate SP_IS_CARLINK_CONNECT----" + (sp.getBoolean(Constants.SP_IS_CARLINK_CONNECT)));
+        LogUtil.d(TAG, "onUpdate SP_IS_HICAR_CONNECT----" + sp.getBoolean(Constants.SP_IS_HICAR_CONNECT));
         RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.layout_desk_card);
-        if (sp.getBoolean(Contants.SP_IS_CARLINK_CONNECT) || sp.getBoolean(Contants.SP_IS_HICAR_CONNECT)) {
+        if (sp.getBoolean(Constants.SP_IS_CARLINK_CONNECT) || sp.getBoolean(Constants.SP_IS_HICAR_CONNECT)) {
             remoteViews.setViewVisibility(R.id.tv_connect_phone, View.GONE);
             remoteViews.setViewVisibility(R.id.cl_phone_info, View.VISIBLE);
-            remoteViews.setTextViewText(R.id.tv_phone_brand, sp.getString(Contants.SP_PHONE_BRAND, ""));
-            remoteViews.setTextViewText(R.id.tv_phone_model, sp.getString(Contants.SP_PHONE_MODEL, ""));
+            remoteViews.setTextViewText(R.id.tv_phone_brand, sp.getString(Constants.SP_PHONE_BRAND, ""));
+            remoteViews.setTextViewText(R.id.tv_phone_model, sp.getString(Constants.SP_PHONE_MODEL, ""));
         } else {
             remoteViews.setViewVisibility(R.id.cl_phone_info, View.GONE);
             remoteViews.setViewVisibility(R.id.tv_connect_phone, View.VISIBLE);

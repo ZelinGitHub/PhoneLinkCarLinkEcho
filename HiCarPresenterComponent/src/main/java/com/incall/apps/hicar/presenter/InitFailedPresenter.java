@@ -7,7 +7,7 @@ import android.os.Message;
 import com.incall.apps.hicar.servicemanager.LogUtil;
 import com.incall.apps.hicar.iview.IInitFailedView;
 import com.incall.apps.hicar.servicemanager.event.ICAEventListener;
-import com.incall.apps.hicar.servicesdk.contants.Contants;
+import com.incall.apps.hicar.servicesdk.contants.Constants;
 
 import java.util.HashMap;
 //InitFailedFragment的presenter
@@ -18,7 +18,7 @@ public class InitFailedPresenter extends BasePresenter<IInitFailedView> {
     private final int MSG_HOME = 1;
 
     public InitFailedPresenter() {
-        serviceManager.addEventListener(Contants.Event.ON_HOME, eventListener);
+        serviceManager.addEventListener(Constants.Event.ON_HOME, eventListener);
         LogUtil.d(TAG, "InitFailedPresenter=");
     }
 
@@ -41,7 +41,7 @@ public class InitFailedPresenter extends BasePresenter<IInitFailedView> {
         public void onEvent(String eventName, Object message) {
             LogUtil.d(TAG, "eventName=" + eventName + "---message=" + message);
             switch (eventName) {
-                case Contants.Event.ON_HOME:
+                case Constants.Event.ON_HOME:
                     initFailedHandler.sendMessage(initFailedHandler.obtainMessage(MSG_HOME, message));
                     break;
                 default:break;
@@ -69,6 +69,6 @@ public class InitFailedPresenter extends BasePresenter<IInitFailedView> {
 
     public void startHicarAdv() {
         HashMap<String, Object> params = new HashMap<>();
-        serviceManager.callServiceSync(Contants.Services.MAIN_SERVICE, Contants.Method.START_HICAR_ADV, params);
+        serviceManager.callServiceSync(Constants.Services.MAIN_SERVICE, Constants.Method.START_HICAR_ADV, params);
     }
 }
