@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class CommonUtil {
 
-    private static final String TAG = "WTPhoneLink/CommonUtil";
+    private static final String TAG = "WTWLink/CommonUtil";
 
     /**
      * img转成String类型

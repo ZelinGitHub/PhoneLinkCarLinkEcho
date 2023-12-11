@@ -28,7 +28,7 @@ import java.util.Collections;
 
 public class CommonUtil {
 
-    private static final String TAG = "WTPhoneLink/CommonUtil";
+    private static final String TAG = "WTWLink/CommonUtil";
 
     public static int getIoCapability() {
         int capability = -1;

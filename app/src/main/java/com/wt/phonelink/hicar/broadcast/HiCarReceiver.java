@@ -9,7 +9,7 @@ import com.incall.apps.hicar.servicesdk.contants.Constants;
 import com.wt.phonelink.hicar.HiCarMainActivity;
 
 public class HiCarReceiver extends BroadcastReceiver {
-    private static final String TAG = "WTPhoneLink/HiCarReceiver";
+    private static final String TAG = "WTWLink/HiCarReceiver";
     private static final String ACTION_START_MAINACTIVITY = "com.incall.apps.hicar.ACTION_START_MAINACTIVITY";
 
 

@@ -22,7 +22,7 @@ public class MainServiceImpl extends BaseHiCarListener implements IMainService {
     private HiCarServiceManager hiCarManager;
     //蓝牙管理器
     private BTManager btManager;
-    private static final String TAG = "WTPhoneLink/MainServiceImpl";
+    private static final String TAG = "WTWLink/MainServiceImpl";
 
 
     //调用init

@@ -30,7 +30,7 @@ import wtcl.lib.widget.WTButton;
 
 //输入连接码的fragment
 public class HiCarAPConnectFragment extends BaseFragment<ApConnectPresenter> implements IAPConnetcView {
-    private static final String TAG = "WTPhoneLink/APConnectFragment";
+    private static final String TAG = "WTWLink/APConnectFragment";
     private static final long FRESH_PIN_INTERVAL = 60 * 1000;
     private PinHandler mPinHandler;
     //presenter

@@ -48,7 +48,7 @@ import wtcl.lib.widget.WTTitleBar;
  * Description:
  */
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "WTPhoneLink/MainActivity";
+    private static final String TAG = "WTWLink/MainActivity";
     private MotionLayout motion_layout;
     private RecyclerView mEntriesRV;
     private WTTitleBar v_close;

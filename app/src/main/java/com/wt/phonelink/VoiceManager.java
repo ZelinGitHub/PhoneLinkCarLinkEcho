@@ -70,7 +70,7 @@ import java.util.List;
  * 注意：车机上在手机语音助手唤醒期间，车机语音助手不响应语音指令；车机语音助手唤醒期间，手机语音助手不响应语音指令。
  */
 public class VoiceManager extends CommandAbilityExecutor {
-    private static final String TAG = "WTPhoneLink/VoiceManager";
+    private static final String TAG = "WTWLink/VoiceManager";
     private Application myApplication;
     //语音客户端
     ISpeechClient mSpeechClient;

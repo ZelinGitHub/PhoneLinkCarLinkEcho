@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class WTStatisticsUtil {
 
-    private static final String TAG = "WTPhoneLink/WTStatisticsUtil";
+    private static final String TAG = "WTWLink/WTStatisticsUtil";
 
     /**
      * @param method 打开方式 1=applist；2=语音指令打开、3=桌面卡片

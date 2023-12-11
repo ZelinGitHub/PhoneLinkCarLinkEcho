@@ -35,12 +35,12 @@ sonarqube {
                 'CAServiceManager/src/main/java/com/incall/apps/hicar/servicemanager/**',
                 'HiCarPresenterComponent/src/main/java/com/incall/apps/hicar/**',
                 'HiCarServiceComponent/src/main/java/com/incall/apps/hicar/servicesdk/**',
-                'app/src/main/java/com/wt/phonelink/hicar/**',
-                'app/src/main/java/com/wt/phonelink/carlink/**',
-                'app/src/main/java/com/wt/phonelink/utils/CommonUtil.java',
-                'app/src/main/java/com/wt/phonelink/MainActivity.java',
-                'app/src/main/java/com/wt/phonelink/PhoneLinkWidgetProvider.java',
-                'app/src/main/java/com/wt/phonelink/MyApplication.java'
+                'app/src/main/java/com/wt/WLink/hicar/**',
+                'app/src/main/java/com/wt/WLink/carlink/**',
+                'app/src/main/java/com/wt/WLink/utils/CommonUtil.java',
+                'app/src/main/java/com/wt/WLink/MainActivity.java',
+                'app/src/main/java/com/wt/WLink/PhoneLinkWidgetProvider.java',
+                'app/src/main/java/com/wt/WLink/MyApplication.java'
         ]
     }
 }

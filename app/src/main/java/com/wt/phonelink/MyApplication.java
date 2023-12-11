@@ -16,7 +16,7 @@ import com.wt.phonelink.utils.VoiceUtils;
 
 public class MyApplication extends Application {
 
-    private static final String TAG = "WTPhoneLink/MyApplication";
+    private static final String TAG = "WTWLink/MyApplication";
     public static Context mContext;
     private SharedPreferencesUtil sp;
 

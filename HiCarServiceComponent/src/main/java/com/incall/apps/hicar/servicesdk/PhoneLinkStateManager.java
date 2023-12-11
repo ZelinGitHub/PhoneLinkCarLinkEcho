@@ -9,7 +9,7 @@ import com.incall.apps.hicar.servicesdk.utils.SharedPreferencesUtil;
 import com.ucar.vehiclesdk.UCarAdapter;
 
 public class PhoneLinkStateManager {
-    private static final String TAG = "WTPhoneLink/PhoneLinkStateManager";
+    private static final String TAG = "WTWLink/PhoneLinkStateManager";
 
     //断开连接
     public static void disconnectDevice(Context context) {

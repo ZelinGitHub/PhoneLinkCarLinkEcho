@@ -19,8 +19,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 //这个类的对象将被注册到UCarAdapter，在开始录音和结束录音时调用
-public class   CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
-    private static final String TAG = "PhoneLink/CarlinkCustomAudioRecord";
+public class CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
+    private static final String TAG = "WLink/CarlinkCustomAudioRecord";
     //录音失败的最大重试次数
     public static final int MAX_RETRY_COUNT = 15;
     //录音失败后的重试间隔
@@ -51,6 +51,7 @@ public class   CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
     //开始录音的回调，被carlink sdk调用
     @Override
     public void onStartRecorder(UCarCommon.AudioFormat format, boolean isCallActive) {
+        Log.d(TAG, "onStartRecorder() ");
         Log.d(TAG, "onStartRecorder() format: " + format);
         //onStartRecorder为开始录制，需车厂自己创建AudioRecord进行录制并且通过sendMicRecordData传输音频数据到手机
         mAudioConfig = AudioConfig.getCarConfig(format);
@@ -71,14 +72,14 @@ public class   CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
     //被CarLink sdk调用
     @Override
     public void onStopRecorder() {
-        Log.d(TAG, "stopRecorder()");
+        Log.d(TAG, "onStopRecorder()");
         reset();
         convertPCM2WAV();
     }
 
     private void reset() {
-        this.mIsRecording = false;
         Log.d(TAG, "reset()");
+        this.mIsRecording = false;
         if (mAudioRecord != null) {
             mAudioRecord.stop();
             mAudioRecord.release();
@@ -237,6 +238,12 @@ public class   CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
     }
 
 
+    private static void saveToLocal(FileOutputStream fos, byte[] audioData) throws IOException {
+        if (fos != null) {
+            fos.write(audioData);
+        }
+    }
+
     private void getAndSendData() {
         if (mAudioRecord == null) {
             Log.e(TAG, "mAudioRecord is null! ");
@@ -267,12 +274,6 @@ public class   CarlinkCustomAudioRecord implements ICarAudioRecorderListener {
         int time = (int) (calendar.getTimeInMillis() / 1000);
         //发送mic数据。参数audioData是short类型。
         UCarAdapter.getInstance().sendMicRecordData(result, audioData, time);
-    }
-
-    private static void saveToLocal(FileOutputStream fos, byte[] audioData) throws IOException {
-        if (fos != null) {
-            fos.write(audioData);
-        }
     }
 
     /**

@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 //HiCarFragment的presenter
 public class HiCarPresenter extends BasePresenter<IHiCarView> {
-    private static final String TAG = "WTPhoneLink/HiCarPresenter";
+    private static final String TAG = "WTWLink/HiCarPresenter";
     private IHiCarView hiCarView;
     private HiCarHandler hiCarHandler;
     private static final int MSG_DEVICE_CONNECT = 1;

@@ -26,7 +26,7 @@ import com.incall.serversdk.server.SvrMngProxy;
 //这个是用来和其他东西跨进程交互的，比如和北斗方控交互
 //在这个service里面，初始化HiCarServiceManager
 public class HiCarService extends Service {
-    private static final String TAG = "WTPhoneLink/HiCarService";
+    private static final String TAG = "WTWLink/HiCarService";
 
     //BBinder对象 HiCarManagerImpl
     private HiCarManagerImpl hiCarManager;

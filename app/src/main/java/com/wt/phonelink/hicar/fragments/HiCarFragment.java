@@ -31,7 +31,7 @@ import com.wt.phonelink.hicar.HiCarMainActivity;
 
 //显示投影的fragment
 public class HiCarFragment extends BaseFragment<HiCarPresenter> implements IHiCarView {
-    private static final String TAG = "WTPhoneLink/HiCarFragment";
+    private static final String TAG = "WTWLink/HiCarFragment";
     private HiCarPresenter mHiCarPresenter;
     //控件对象的引用
     private HiSightSurfaceView mHiSightSurfaceView;

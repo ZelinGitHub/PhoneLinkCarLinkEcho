@@ -15,7 +15,7 @@ import com.incall.apps.hicar.servicesdk.utils.AppStatusUtil;
  */
 public class CommonKeyService extends AccessibilityService {
 
-    private final String TAG = "WTPhoneLink/CommonKeyService";
+    private final String TAG = "WTWLink/CommonKeyService";
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent accessibilityEvent) {

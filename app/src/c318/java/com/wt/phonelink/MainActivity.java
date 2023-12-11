@@ -41,7 +41,7 @@ import wtcl.lib.widget.WTTitleBar;
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "WTPhoneLink/MainActivity";
+    private static final String TAG = "WTWLink/MainActivity";
     private ImageView ivWtBox, ivHiCar, ivCarLink;
     private WTTitleBar v_close;
     private SharedPreferencesUtil sp;

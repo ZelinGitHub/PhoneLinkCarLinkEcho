@@ -47,7 +47,7 @@ import java.util.Map;
  * Description: hi Car音频管理类
  */
 public class HcAudioManager extends BaseHiCarListener implements IKeyListener {
-    private final static String TAG = "WTPhoneLink/HcAudioManager";
+    private final static String TAG = "WTWLink/HcAudioManager";
     /**
      * 接收导航控制action字段
      */

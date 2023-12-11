@@ -13,7 +13,7 @@ import java.util.HashMap;
 //输入连接码的fragment APConnectFragment的presenter
 public class ApConnectPresenter extends BasePresenter<IAPConnetcView> {
 
-    private static final String TAG = "WTPhoneLink/ApConnectPresenter";
+    private static final String TAG = "WTWLink/ApConnectPresenter";
     private IAPConnetcView apConnetcView;
     private static final int MSG_PIN_CODE_CHANGE = 1;
 

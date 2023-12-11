@@ -9,7 +9,7 @@ import android.content.IntentFilter;
 import android.util.Log;
 
 public class VoiceTestReceiver extends BroadcastReceiver {
-    private static final String TAG = "WTPhoneLink/VoiceTestReceiver";
+    private static final String TAG = "WTWLink/VoiceTestReceiver";
     public static final String ACTION_WT_VOICE_TEST = "com.wt.phonelink.action.VoiceTestReceiver";
     public static final String PERMISSION_WT_VOICE_TEST = "com.wt.phonelink.permission.VoiceTestReceiver";
 

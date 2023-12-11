@@ -16,7 +16,7 @@ import java.util.Set;
 //蓝牙管理器
 //HiCar和CarLink都会使用这个蓝牙管理器
 public class BTManager {
-    private static final String TAG = "WTPhoneLink/BTManager";
+    private static final String TAG = "WTWLink/BTManager";
     private final BluetoothAdapter bluetoothAdapter;
     private BluetoothHeadsetClient mBluetoothHeadsetClient;
 

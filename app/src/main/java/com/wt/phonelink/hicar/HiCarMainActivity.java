@@ -53,7 +53,7 @@ import androidx.fragment.app.FragmentTransaction;
 public class HiCarMainActivity extends AppCompatActivity implements IMainView {
     //presenter
     private MainPresenter mainPresenter;
-    private final String TAG = "WTPhoneLink/HiCarMainActivity";
+    private final String TAG = "WTWLink/HiCarMainActivity";
     private HiCarFragment hiCarFragment;
     private HiCarAPConnectFragment apConnectFragment;
     private HiCarConnectFailedFragment connectFailedFragment;
@@ -553,7 +553,7 @@ public class HiCarMainActivity extends AppCompatActivity implements IMainView {
     //Android系统的蓝牙监听
     public final static class ProxyServiceListener implements BluetoothProfile.ServiceListener {
 
-        private static final String TAG = "PhoneLink/ProxyServiceListener";
+        private static final String TAG = "WLink/ProxyServiceListener";
         private BluetoothHeadsetClient mBluetoothHeadsetClient;
 
         //蓝牙已连接

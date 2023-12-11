@@ -29,7 +29,7 @@ public class FlightCard extends FrameLayout {
     private final TextView tv_no_schedule;
     private final TextView tv_connect;
     private final Button btn_connect;
-    private static final String TAG = "WTPhoneLink/FlightCard";
+    private static final String TAG = "WTWLink/FlightCard";
 
     public FlightCard(@NonNull Context context) {
         this(context, null);

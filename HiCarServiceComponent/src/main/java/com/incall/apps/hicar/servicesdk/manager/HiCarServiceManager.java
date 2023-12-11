@@ -55,7 +55,7 @@ import static com.incall.apps.hicar.servicesdk.contants.Constants.IS_CARLINK_FRO
 //管理类，可以看做工具类。是一个核心类。
 //HiCar服务管理器
 public class HiCarServiceManager {
-    private static final String TAG = "WTPhoneLink/HiCarServiceManager";
+    private static final String TAG = "WTWLink/HiCarServiceManager";
     //华为hiCar sdk中的类 这个是核心类，主要就是通过这个类的对象来调用hiCar sdk的功能
     private HiCarAdapter mHiCarAdapter = null;
     //车配置

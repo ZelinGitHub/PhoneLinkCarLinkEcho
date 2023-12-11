@@ -14,7 +14,7 @@ import java.util.HashMap;
 //对应的界面是HiCarMainActivity
 //接收MainServiceImpl发送的事件
 public class MainPresenter extends BasePresenter<IMainView> {
-    private static final String TAG = "WTPhoneLink/MainPresenter";
+    private static final String TAG = "WTWLink/MainPresenter";
     private IMainView mainView;
     private final int MSG_PIN_CODE_CHANGE = 0;
     private final int MSG_DEVICE_CONNECT = 1;

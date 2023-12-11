@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HiCarManagerService extends Service {
-    private static final String TAG = "WTPhoneLink/HiCarManagerService";
+    private static final String TAG = "WTWLink/HiCarManagerService";
     private HiCarService mHiCarService;
     //BpBinder对象列表
     private final List<AppInfoChangeListener> mAppInfoListeners = new ArrayList<>();

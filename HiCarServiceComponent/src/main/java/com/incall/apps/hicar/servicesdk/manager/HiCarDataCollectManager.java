@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * 埋点管理
  */
 public class HiCarDataCollectManager {
-    private static final String TAG = "WTPhoneLink/HiCarDataCollectManager";
+    private static final String TAG = "WTWLink/HiCarDataCollectManager";
 
     private static final String BT_DISCONNECT_EID = "2703";
     private static final String DEVICE_CONNECTED_EID = "4101";

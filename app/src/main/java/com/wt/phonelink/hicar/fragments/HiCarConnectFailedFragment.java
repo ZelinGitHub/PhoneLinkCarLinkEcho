@@ -15,7 +15,7 @@ import com.wt.phonelink.R;
 
 //连接失败的fragment
 public class HiCarConnectFailedFragment extends BaseFragment<FailedPresenter> implements IConnectFailedView {
-    private static final String TAG = "WTPhoneLink/ConnectFailedFragment";
+    private static final String TAG = "WTWLink/ConnectFailedFragment";
     private Button hicarUsbConnectCancel;
     private Button hicarUsbConnectReset;
     private Button hicarUsbConnectCancelUsb;

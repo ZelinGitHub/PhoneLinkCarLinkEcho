@@ -74,7 +74,7 @@ import wtcl.lib.widget.WTButton;
 
 //carLink的连接界面
 public class CarLinkMainActivity extends PermissionsReqActivity {
-    private static final String TAG = "WTPhoneLink/CarLinkMainActivity";
+    private static final String TAG = "WTWLink/CarLinkMainActivity";
     private CarlinkCustomAudioRecord mAudioRecorderListener;
 
     public static final int MSG_ON_CONNECT_STATE_CHANGED = 101;

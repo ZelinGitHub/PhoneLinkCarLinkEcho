@@ -23,7 +23,7 @@ import org.greenrobot.eventbus.EventBus;
 //BBinder
 //这个是用来跨进程交互的，比如和北斗方控交互
 public class HiCarManagerImpl extends IHiCarManager.Stub {
-    private static final String TAG = "WTPhoneLink/HiCarManagerImpl";
+    private static final String TAG = "WTWLink/HiCarManagerImpl";
     private RemoteCallbackList<IHiCarListener> listListener = new RemoteCallbackList<>();
     private RemoteCallbackList<IHiCarVoiceFreeListener> listVoiceListener = new RemoteCallbackList<>();
     private HiCarServiceManager manager;

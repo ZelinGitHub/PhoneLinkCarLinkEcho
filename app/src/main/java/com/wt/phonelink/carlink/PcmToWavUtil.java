@@ -1,6 +1,7 @@
 package com.wt.phonelink.carlink;
 
 import android.media.AudioRecord;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,6 +16,7 @@ import java.io.IOException;
  * 描述：pcm格式的音频转换为wav格式的工具类
  */
 public class PcmToWavUtil {
+    private static final String TAG = "WLink/PcmToWavUtil";
     //缓存的音频大小
     private final int mBufferSize;
     // 此处的值必须与录音时的采样率一致
@@ -43,9 +45,8 @@ public class PcmToWavUtil {
         FileOutputStream out;
         long totalAudioLen;
         long totalDataLen;
-        long longSampleRate = mSampleRate;
         int channels = 2;
-        long byteRate = 16 * mSampleRate * channels / 8;
+        long byteRate = 16L * mSampleRate * channels / 8;
         byte[] data = new byte[mBufferSize];
         try {
             in = new FileInputStream(inFilename);
@@ -54,14 +55,14 @@ public class PcmToWavUtil {
             totalDataLen = totalAudioLen + 36;
 
             writeWaveFileHeader(out, totalAudioLen, totalDataLen,
-                    longSampleRate, channels, byteRate);
+                    mSampleRate, channels, byteRate);
             while (in.read(data) != -1) {
                 out.write(data);
             }
             in.close();
             out.close();
             if (deleteOrg) {
-                new File(inFilename).delete();
+                Log.d(TAG, "delete result: " + new File(inFilename).delete());
             }
         } catch (IOException e) {
             e.printStackTrace();

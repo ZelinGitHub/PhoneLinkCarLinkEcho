@@ -22,7 +22,7 @@ import java.util.Properties;
  * @since 2019-08-23
  */
 public class HiCarAppAdapter {
-    private static final String TAG = "WTPhoneLink/HiCarAppAdapter";
+    private static final String TAG = "WTWLink/HiCarAppAdapter";
 
     private volatile static HiCarAppAdapter mHiCarAppAdapter = null;
 

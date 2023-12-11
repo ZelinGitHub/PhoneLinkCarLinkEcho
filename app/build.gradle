@@ -134,7 +134,7 @@ versionName: "C236_V1_0_3"
                            '**/R.class',
                            '**/BuildConfig.*',
                            '**/Manifest*.*',
-                           'app/src/main/java/com/wt/phonelink/hicar/broadcast/**'
+                           'app/src/main/java/com/wt/WLink/hicar/broadcast/**'
 
                 ]
         )

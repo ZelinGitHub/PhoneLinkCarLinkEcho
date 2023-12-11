@@ -18,7 +18,7 @@ import com.incall.apps.hicar.servicesdk.utils.SharedPreferencesUtil;
  */
 public class BtReceiver extends BroadcastReceiver {
 
-    private static final String TAG = "WTPhoneLink/BtReceiver";
+    private static final String TAG = "WTWLink/BtReceiver";
 
     private static final BtReceiver receiver = new BtReceiver();
 

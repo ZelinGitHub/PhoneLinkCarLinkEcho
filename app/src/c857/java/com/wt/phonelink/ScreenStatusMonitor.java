@@ -31,7 +31,7 @@ public class ScreenStatusMonitor {
     public static final int TYPE_RIGHT_SHOW = 1;  //右侧显示
     public static final int TYPE_ALL_HIDE = 0;    //全屏
 
-    private static final String TAG = "WTPhoneLink/ScreenStatusMonitor";
+    private static final String TAG = "WTWLink/ScreenStatusMonitor";
     //在Settings中保存的全半屏状态的数据（value）对应的key
     private static final String KEY_SCREEN_SHOW = "key_screen_show";
     private static ScreenStatusMonitor mInstance;

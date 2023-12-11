@@ -12,7 +12,7 @@ import com.wt.phonelink.MyApplication;
 
 public class VoiceUtils {
 
-    private static final String TAG = "WTPhoneLink/VoiceUtils";
+    private static final String TAG = "WTWLink/VoiceUtils";
     private static VoiceUtils voiceUtils;
     //启动车机的全局免唤醒语音助手
     public static final String START_VOICE_ASSISTANT = "resumevr";

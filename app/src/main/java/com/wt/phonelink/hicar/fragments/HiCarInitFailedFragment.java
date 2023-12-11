@@ -24,7 +24,7 @@ import wtcl.lib.widget.WTButton;
 
 //连接初始化失败fragment
 public class HiCarInitFailedFragment extends BaseFragment<InitFailedPresenter> implements IInitFailedView {
-    private static final String TAG = "WTPhoneLink/InitFailedFragment";
+    private static final String TAG = "WTWLink/InitFailedFragment";
     private WTButton btn_hicar_init_failed_cancel;
     private WTButton btn_hicar_init_failed_reset;
 

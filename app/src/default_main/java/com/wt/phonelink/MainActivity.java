@@ -44,7 +44,7 @@ import com.wt.phonelink.utils.VoiceUtils;
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, LinkEntryAdapter.OnItemClickListener {
 
-    private static final String TAG = "WTPhoneLink/MainActivity";
+    private static final String TAG = "WTWLink/MainActivity";
     //    private ImageView /*ivWtBox,*/ ivHiCar, ivCarLink,ivHiHonor;
     private SharedPreferencesUtil sp;
     private ConstraintLayout clMainBg;

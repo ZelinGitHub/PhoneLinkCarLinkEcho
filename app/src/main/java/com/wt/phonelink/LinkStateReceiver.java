@@ -13,7 +13,7 @@ import com.incall.apps.hicar.servicesdk.utils.SharedPreferencesUtil;
 
 
 public class LinkStateReceiver extends BroadcastReceiver {
-    private static final String TAG = "WTPhoneLink/LinkStateReceiver";
+    private static final String TAG = "WTWLink/LinkStateReceiver";
     public static final String ACTION_WT_LINK_STATE = "com.tinnove.link.action.WT_LINK_STATE";
     public static final String PERMISSION_WT_LINK_STATE = "com.tinnove.link.permission.WT_LINK_STATE";
 
