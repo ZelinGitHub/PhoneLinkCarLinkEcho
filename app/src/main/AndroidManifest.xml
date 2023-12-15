@@ -11,6 +11,10 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission
             android:name="android.permission.MANAGE_USB"
             tools:ignore="ProtectedPermissions" />
@@ -87,10 +91,17 @@
                     android:name="android.appwidget.provider"
                     android:resource="@xml/appwidget_provider" />
         </receiver>
+        <activity
+                android:name=".jacoco.InstrumentedActivity"
+                android:label="InstrumentationActivity" />
     </application>
 
     <queries>
         <package android:name="com.tinnove.wecarspeech" />
     </queries>
-
+    <instrumentation
+            android:name=".jacoco.JacocoInstrumentation"
+            android:handleProfiling="true"
+            android:label="CoverageInstrumentation"
+            android:targetPackage="com.wt.phonelink" />
 </manifest>

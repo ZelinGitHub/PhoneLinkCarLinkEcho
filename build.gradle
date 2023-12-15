@@ -4,27 +4,17 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
-        //配置插件
-        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.1"
+        classpath "org.jacoco:org.jacoco.core:0.8.2"
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.5'
     }
 }
-//注意这里要紧贴着上面的buildscript
-// 配置插件
-plugins {
-    id "org.sonarqube" version "3.1"
-    id 'jacoco'
-}
-jacoco{
-
-    toolVersion="0.8.5"
-
-}
-apply from: "sonar.gradle"
-
 allprojects {
     repositories {
         maven {
@@ -58,6 +48,9 @@ allprojects {
         jcenter()
         maven { url 'https://jitpack.io' }
         mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 }
 

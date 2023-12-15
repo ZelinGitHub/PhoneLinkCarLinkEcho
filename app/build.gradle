@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'jacoco'
-
+apply from: 'jacoco.gradle'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -66,37 +65,6 @@ versionName: "C236_V1_0_3"
             testCoverageEnabled true
         }
     }
-
-    productFlavors {// 配置了不同的res资源
-        default_main {
-
-        }
-        c318 {
-
-        }
-        c857 {
-
-        }
-    }
-
-    sourceSets {
-        main {
-            java.srcDirs = ['src/main/java']
-            res.srcDirs = ['src/main/res']
-        }
-        default_main {
-            java.srcDirs = ['src/default_main/java']
-            res.srcDirs = ['src/default_main/res']
-        }
-        c318 {
-            java.srcDirs = ['src/c318/java']
-            res.srcDirs = ['src/c318/res']
-        }
-        c857 {
-            java.srcDirs = ['src/c857/java']
-            res.srcDirs = ['src/c857/res']
-        }
-    }
     android.applicationVariants.all { variant ->
         variant.outputs.all { output ->
             outputFileName = "PhoneLink.apk"
@@ -113,35 +81,7 @@ versionName: "C236_V1_0_3"
         sourceCompatibility JavaVersion.VERSION_1_8
     }
 
-    def coverageSourceDirs = [
-            './src/main/java'
-    ]
 
-    task jacocoTestReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
-        group = "Reporting"
-        description = "Generate Jacoco coverage reports after running tests."
-
-        reports {
-            xml.enabled = true
-            html.enabled = true
-        }
-
-        classDirectories.from = fileTree(
-                //检测覆盖率的class所在目录(以项目class所在目录为准)
-                //                dir: './build/intermediates/classes/debug',       //gradle2.3 class所在目录
-                dir: './build/intermediates/javac/debug',               //增加以上目录中不需要检测的文件列表
-                excludes: ['**/R$*.class',
-                           '**/R.class',
-                           '**/BuildConfig.*',
-                           '**/Manifest*.*',
-                           'app/src/main/java/com/wt/WLink/hicar/broadcast/**'
-
-                ]
-        )
-
-        sourceDirectories.from = files(coverageSourceDirs) //设置需要检测覆盖率的目录
-        executionData.from = files("$buildDir/jacoco/testDebugUnitTest.exec") //存储APP运行时产生报告的路径
-    }
     packagingOptions {
         pickFirst 'lib/arm64-v8a/libcrypto.so'
     }
@@ -202,9 +142,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1" // 协程支持
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1" // 协程支持
     implementation "com.blankj:utilcodex:1.30.5" // Util 与Json 支持
-    c318Implementation "com.autopai.support:widget:C318-1.0.0.bs"
-    c857Implementation "com.autopai.support:widget:C857-1.0.0.ad"
-    //独立主题换肤
+    implementation "com.autopai.support:widget:C318-1.0.0.bs"//独立主题换肤
     implementation 'com.openos.sdk:openos_platform:1.0.0.+'
     //北斗android.car 监听电源状态
     api files('libs/android.car4.4.jar')

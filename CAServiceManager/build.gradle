@@ -14,17 +14,7 @@ android {
         //定义flavor的维度，每个flavor都可以配置自己的维度（Dimension）
         flavorDimensions "default"
     }
-    productFlavors {// 配置了不同的res资源
-        default_main {
 
-        }
-        c318 {
-
-        }
-        c857 {
-
-        }
-    }
     buildTypes {
         release {
             minifyEnabled false

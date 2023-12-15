@@ -33,4 +33,6 @@
     <color name="colorTextBlue60">#FF606C95</color>
     <color name="colorTextBlueFF60">#FF606C95</color>
     <color name="colorTextBlackD7">#D7DEE8</color>
+    <color name="background">#FFE4E7EE</color>
+    <color name="app_name_color">#FF333333</color>
 </resources>
